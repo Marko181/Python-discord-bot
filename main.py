@@ -9,8 +9,10 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import time
 import subprocess
 
-# Channel ID v ločeni mapi
-channelID = 0
+# Channel ID v ločeni datoteki
+channelID, channelID_BP = 0
+# User ID v ločeni datoteki
+user_ids = [0,0,0,0,0]
 intents = discord.Intents.all()
 intents.message_content = True
 client = discord.Client(intents=intents)
@@ -34,6 +36,15 @@ def bot_help():
 # Se proži ob zagonu da se logina v server
 @client.event
 async def on_ready():
+    # Get the channel
+    channel = client.get_channel(channelID_BP)
+    
+    # Check if the channel exists and send a startup message
+    if channel:
+        await channel.send("Alive and ready!")
+    else:
+        print("Target channel not found")
+
     print(f'Logged in as {client.user}')
     # Proženje ob določeni uri
     scheduler = AsyncIOScheduler()
@@ -49,10 +60,7 @@ async def on_message(message):
     try:
         # Ukaz za pomoč
         if message.content.startswith('help'):
-            if message.author.id == 220954771685769216:
-                await message.channel.send('Ne ne bom ti pomagal')
-            else:
-                await message.channel.send(bot_help())
+            await message.channel.send(bot_help())
         
         # Menza
         elif message.content.startswith('menza') or message.content.startswith('Menza'):
@@ -70,7 +78,7 @@ async def on_message(message):
         
         # GIF - DarkMode (Dark mode)
         elif 'dark mode' in message.content.lower():
-            gif_path = './DarkMode.jpg'
+            gif_path = './files/DarkMode.jpg'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
         
@@ -120,7 +128,11 @@ async def on_message(message):
         
         ######### !!! DANGEROUS ZONE - Update !!! #########
         elif message.content.startswith('BotUpdateNow'):
-            update.bot_git_update()
+            if message.author.id == user_ids[0] or message.author.id == user_ids[1] or message.author.id == user_ids[2] or message.author.id == user_ids[3] or message.author.id == user_ids[4]:
+                update.bot_git_update()
+            else:
+                await message.channel.send('Ja ne nč ne bo')
+            
         
         # Status sporočilo
         elif 'status' in message.content.lower():
@@ -133,13 +145,23 @@ async def on_message(message):
 ############ START BOT ############
 if __name__ == "__main__":
     # Channel ID v ločeni mapi
-    keypath = "./ChannelID.txt"
-    with open(keypath, 'r') as file:
+    id_path1 = "./Classified/ChannelID.txt"
+    with open(id_path1, 'r') as file:
         channelID = int(file.readline().strip())
         print(channelID)
 
+    id_path2 = "./Classified/ChannelID_BP.txt"
+    with open(id_path2, 'r') as file:
+        channelID_BP = int(file.readline().strip())
+        print(channelID_BP)
+
+    id_path3 = "./Classified/sudo_users.txt"
+    with open(id_path3, 'r') as file:
+        user_ids = [int(line.strip()) for line in file.readlines()]
+        print(user_ids)
+
     # BotKey v ločeni mapi
-    keypath = "./BotKey.txt"
+    keypath = "./Classified/BotKey.txt"
     with open(keypath, 'r') as file:
         key = file.readline().strip()
 
