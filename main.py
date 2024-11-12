@@ -105,6 +105,10 @@ async def on_message(message):
                 await message.channel.send(nameTag)
                 time.sleep(1)
         
+        # Zipam ti mamo
+        elif 'zip' in message.content.lower():
+            await message.channel.send('MA ZIPAM TI MAMO')
+        
         # Hrana na bone
         elif message.content.startswith('hrana'):
             # Extract everything after 'hrana ' to get the restaurant name
