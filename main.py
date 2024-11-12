@@ -10,7 +10,8 @@ import time
 import subprocess
 
 # Channel ID v ločeni datoteki
-channelID, channelID_BP = 0
+channelID = 0
+channelID_BP = 0
 # User ID v ločeni datoteki
 user_ids = [0,0,0,0,0]
 intents = discord.Intents.all()
@@ -116,6 +117,18 @@ async def on_message(message):
         # Zipam ti mamo
         elif 'zip' in message.content.lower():
             await message.channel.send('MA ZIPAM TI MAMO')
+
+        elif 'meme' in message.content.lower(): 
+            files = [f for f in os.listdir("./files") if os.path.isfile(os.path.join("./files", f)) and not f.endswith(".txt")]
+            
+            # Check if there are any valid files to choose from
+            if files:
+                file_path = os.path.join("./files", random.choice(files))
+                file = discord.File(file_path)
+                await message.channel.send(file=file)
+            else:
+                await message.channel.send("No valid files to send!")
+
         
         # Hrana na bone
         elif message.content.startswith('hrana'):
