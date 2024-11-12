@@ -49,7 +49,10 @@ async def on_message(message):
     try:
         # Ukaz za pomoč
         if message.content.startswith('help'):
-            await message.channel.send(bot_help())
+            if message.author.id == 220954771685769216:
+                await message.channel.send('Ne ne bom ti pomagal')
+            else:
+                await message.channel.send(bot_help())
         
         # Menza
         elif message.content.startswith('menza') or message.content.startswith('Menza'):
