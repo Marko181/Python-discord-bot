@@ -1,0 +1,6 @@
+# ignore directories
+__pycache__/
+BotKey.txt
+ChannelID.txt
+BotUpdate.sh
+logfile.log
