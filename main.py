@@ -49,7 +49,7 @@ async def on_ready():
     print(f'Logged in as {client.user}')
     # Proženje ob določeni uri
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(send_menza_message, 'cron', day_of_week='mon-fri', hour=12, minute=31, month='1-5,10-12')
+    scheduler.add_job(send_menza_message, 'cron', day_of_week='mon-fri', hour=10, minute=0, month='1-5,10-12')
     scheduler.start()
 
 # Proženje ob pingu
