@@ -9,6 +9,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import time
 import subprocess
 
+bot_version = " v: 2.1.0" 
 # Channel ID v ločeni datoteki
 channelID = 0
 channelID_BP = 0
@@ -37,20 +38,25 @@ def bot_help():
 # Se proži ob zagonu da se logina v server
 @client.event
 async def on_ready():
-    # Get the channel
-    channel = client.get_channel(channelID_BP)
-    
-    # Check if the channel exists and send a startup message
-    if channel:
-        await channel.send("Alive and ready!")
-    else:
-        print("Target channel not found")
+    try:
+        # Get the channel
+        channel = client.get_channel(channelID_BP)
+        
+        # Check if the channel exists and send a startup message
+        if channel:
+            msg = "Alive and ready!" + bot_version
+            await channel.send(msg)
+        else:
+            print("Target channel not found")
 
-    print(f'Logged in as {client.user}')
-    # Proženje ob določeni uri
-    scheduler = AsyncIOScheduler()
-    scheduler.add_job(send_menza_message, 'cron', day_of_week='mon-fri', hour=10, minute=0, month='1-5,10-12')
-    scheduler.start()
+        print(f'Logged in as {client.user}')
+        # Proženje ob določeni uri
+        scheduler = AsyncIOScheduler()
+        scheduler.add_job(send_menza_message, 'cron', day_of_week='mon-fri', hour=10, minute=0, month='1-5,10-12')
+        scheduler.start()
+
+    except Exception as e:
+        await channel.send(f"An error occurred: {e}")
 
 # Proženje ob pingu
 @client.event
@@ -107,12 +113,17 @@ async def on_message(message):
         
         # Spam tag
         elif 'spam' in message.content.lower():
-            # Extract everything after 'spam ' to get the user name
-            nameTag = message.content[len('spam '):].strip()
-            # Send name tag spam
-            for i in range(10):
-                await message.channel.send(nameTag)
-                time.sleep(1)
+            if message.author.id == user_ids[4]:
+                gif_path = './files/ke_tip.png'
+                file = discord.File(gif_path)
+                await message.channel.send(file=file)
+            else:
+                # Extract everything after 'spam ' to get the user name
+                nameTag = message.content[len('spam '):].strip()
+                # Send name tag spam
+                for i in range(10):
+                    await message.channel.send(nameTag)
+                    time.sleep(1)
         
         # Zipam ti mamo
         elif 'zip' in message.content.lower():
@@ -150,7 +161,7 @@ async def on_message(message):
         
         # Status sporočilo
         elif 'status' in message.content.lower():
-            response = "Awake and alive!"
+            response = "Awake and alive!" + bot_version
             await message.channel.send(response)
 
     except Exception as e:
