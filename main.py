@@ -150,8 +150,29 @@ async def on_message(message):
         if 'zip' in message.content.lower():
             await message.channel.send('MA ZIPAM TI MAMO')
 
+        # Specific meme
+        if message.content.startswith('meme'):
+            file_name = message.content[len('meme '):].strip()
+            if file_name:
+                file_path = os.path.join("./files/", file_name)
+                file = discord.File(file_path)
+                await message.channel.send(file=file)
+            else:
+                await message.channel.send("Nism najdu mema :(")
+
+
+        # Meme list
+        if 'list meme' in message.content.lower():
+            files = [f for f in os.listdir("./files") if os.path.isfile(os.path.join("./files", f)) and not f.endswith(".txt")]
+            if files:
+                file_list = "\n".join(files)  # Join file names with a newline for better formatting
+                await message.channel.send(f"Files:\n{file_list}")
+            else:
+                await message.channel.send("No files found.")
+
+
         # Random meme iz mape "files"
-        if 'meme' in message.content.lower() or 'jazjaz' in message.content.lower(): 
+        if 'random meme' in message.content.lower() or 'jazjaz' in message.content.lower(): 
             files = [f for f in os.listdir("./files") if os.path.isfile(os.path.join("./files", f)) and not f.endswith(".txt")]
             
             # Check if there are any valid files to choose from
