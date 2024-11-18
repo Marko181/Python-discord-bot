@@ -23,7 +23,7 @@
 2. Install required Python libraries by running:
    ```bash
    pip install -r requirements.txt
-4. Add a .txt file with your channel ID, bot key and user IDs
+4. Add a .txt files with your channel ID, bot key and user IDs
 6. Enable necessary settings in your Discord server
 7. Run [main.py](main.py)
 
