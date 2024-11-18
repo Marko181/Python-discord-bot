@@ -9,7 +9,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import time
 import subprocess
 
-bot_version = " v: 2.1.0" 
+bot_version = " v: 2.1.1" 
 # Channel ID v ločeni datoteki
 channelID = 0
 channelID_BP = 0
@@ -113,17 +113,30 @@ async def on_message(message):
         
         # Spam tag
         elif 'spam' in message.content.lower():
-            if message.author.id == user_ids[4]:
-                gif_path = './files/ke_tip.png'
-                file = discord.File(gif_path)
-                await message.channel.send(file=file)
-            else:
-                # Extract everything after 'spam ' to get the user name
-                nameTag = message.content[len('spam '):].strip()
-                # Send name tag spam
-                for i in range(10):
-                    await message.channel.send(nameTag)
-                    time.sleep(1)
+            # Extract everything after 'spam ' to get the user name
+            nameTag = message.content[len('spam '):].strip()
+            # Send name tag spam
+            for i in range(10):
+                await message.channel.send(nameTag)
+                time.sleep(1)
+        
+        # Ke Tip
+        elif 'ke tip' in message.content.lower():
+            gif_path = './files/ke_tip.png'
+            file = discord.File(gif_path)
+            await message.channel.send(file=file)
+
+        # Minijon
+        elif 'jon' in message.content.lower():
+            gif_path = './files/minijon.gif'
+            file = discord.File(gif_path)
+            await message.channel.send(file=file)
+
+        # JOOOOOOJ
+        elif 'joo' in message.content.lower() or 'joj' in message.content.lower():
+            gif_path = './files/jernej.jpg'
+            file = discord.File(gif_path)
+            await message.channel.send(file=file)
         
         # Zipam ti mamo
         elif 'zip' in message.content.lower():
