@@ -154,6 +154,7 @@ async def on_message(message):
         # Specific meme
         if message.content.startswith('meme'):
             file_name = message.content[len('meme '):].strip()
+            await message.delete()
             if file_name:
                 file_path = os.path.join("./files/", file_name)
                 file = discord.File(file_path)
