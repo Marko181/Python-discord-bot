@@ -70,49 +70,49 @@ async def on_message(message):
             await message.channel.send(bot_help())
         
         # Menza
-        elif message.content.startswith('menza') or message.content.startswith('Menza'):
+        if message.content.startswith('menza') or message.content.startswith('Menza'):
             await message.channel.send(main_menza())
         
         # GIF - Perš (Kinder jajček)
-        elif 'kinder jajček' in message.content.lower():
+        if 'kinder jajček' in message.content.lower():
             await message.channel.send('https://media1.tenor.com/m/OD84C08uSMAAAAAd/world-war-z-chomp.gif')
         
         # GIF - Perš (CEF - Tyson)
-        elif 'cef' in message.content.lower():
+        if 'cef' in message.content.lower():
             gif_path = './files/cef.gif'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
         
         # GIF - DarkMode (Dark mode)
-        elif 'dark mode' in message.content.lower():
+        if 'dark mode' in message.content.lower():
             gif_path = './files/DarkMode.jpg'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
         
         # GIF - Koporec (koporec)
-        elif 'koporec' in message.content.lower():
+        if 'koporec' in message.content.lower():
             gif_path = './files/koporec_meme.jpg'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
         
         # MEME - Mare (SkillIssue)
-        elif 'skill issue' in message.content.lower():
+        if 'skill issue' in message.content.lower():
             gif_path = './files/SkillIssue.png'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
         
         # Matlab - index (MatlabIndex)
-        elif 'matlab' in message.content.lower():
+        if 'matlab' in message.content.lower():
             gif_path = './files/MatlabIndex.png'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
         
         # Izpis imen
-        elif 'whois' in message.content.lower():
+        if 'whois' in message.content.lower():
             await message.channel.send(whois_table())
         
         # Spam tag
-        elif 'spam' in message.content.lower():
+        if 'spam' in message.content.lower():
             # Extract everything after 'spam ' to get the user name
             nameTag = message.content[len('spam '):].strip()
             # Send name tag spam
@@ -121,29 +121,29 @@ async def on_message(message):
                 time.sleep(1)
         
         # Ke Tip
-        elif 'ke tip' in message.content.lower():
+        if 'ke tip' in message.content.lower():
             gif_path = './files/ke_tip.png'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
 
         # Minijon
-        elif 'jon' in message.content.lower():
+        if 'jon' in message.content.lower():
             gif_path = './files/minijon.gif'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
 
         # JOOOOOOJ
-        elif 'joo' in message.content.lower() or 'joj' in message.content.lower():
+        if 'joo' in message.content.lower() or 'joj' in message.content.lower():
             gif_path = './files/jernej.jpg'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
         
         # Zipam ti mamo
-        elif 'zip' in message.content.lower():
+        if 'zip' in message.content.lower():
             await message.channel.send('MA ZIPAM TI MAMO')
 
         # Random meme iz mape "files"
-        elif 'meme' in message.content.lower() or 'jazjaz' in message.content.lower(): 
+        if 'meme' in message.content.lower() or 'jazjaz' in message.content.lower(): 
             files = [f for f in os.listdir("./files") if os.path.isfile(os.path.join("./files", f)) and not f.endswith(".txt")]
             
             # Check if there are any valid files to choose from
@@ -156,7 +156,7 @@ async def on_message(message):
 
         
         # Hrana na bone
-        elif message.content.startswith('hrana'):
+        if message.content.startswith('hrana'):
             # Extract everything after 'hrana ' to get the restaurant name
             restaurant_name = message.content[len('hrana '):].strip()
             # Call your get_menu function with the extracted restaurant name
@@ -165,7 +165,7 @@ async def on_message(message):
             await message.channel.send(menu)
         
         ######### !!! DANGEROUS ZONE - Update !!! #########
-        elif message.content.startswith('BotUpdateNow'):
+        if message.content.startswith('BotUpdateNow'):
             if message.author.id == user_ids[0] or message.author.id == user_ids[1] or message.author.id == user_ids[2] or message.author.id == user_ids[3] or message.author.id == user_ids[4]:
                 update.bot_git_update()
             else:
@@ -173,7 +173,7 @@ async def on_message(message):
             
         
         # Status sporočilo
-        elif 'status' in message.content.lower():
+        if 'status' in message.content.lower():
             response = "Awake and alive!" + bot_version
             await message.channel.send(response)
 
