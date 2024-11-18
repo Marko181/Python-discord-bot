@@ -8,6 +8,7 @@ import update
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import time
 import subprocess
+import random
 
 bot_version = " v: 2.1.2" 
 # Channel ID v ločeni datoteki
@@ -122,9 +123,16 @@ async def on_message(message):
         
         # Ke Tip
         if 'ke tip' in message.content.lower():
-            gif_path = './files/ke_tip.png'
-            file = discord.File(gif_path)
-            await message.channel.send(file=file)
+            try:
+                await message.delete()  # Deletes the message
+                gif_path = './files/ke_tip.png'
+                file = discord.File(gif_path)  # Loads the file
+                await message.channel.send(file=file)  # Sends the file
+            except FileNotFoundError:
+                await message.channel.send("Error: File not found.")
+            except discord.Forbidden:
+                await message.channel.send("Error: Missing permissions to delete messages.")
+
 
         # Minijon
         if 'jon' in message.content.lower():
