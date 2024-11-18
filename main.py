@@ -10,7 +10,7 @@ import time
 import subprocess
 import random
 
-bot_version = " v: 2.1.2" 
+bot_version = " v: 2.1.3" 
 # Channel ID v ločeni datoteki
 channelID = 0
 channelID_BP = 0
@@ -116,6 +116,7 @@ async def on_message(message):
         if 'spam' in message.content.lower():
             # Extract everything after 'spam ' to get the user name
             nameTag = message.content[len('spam '):].strip()
+            await message.delete()
             # Send name tag spam
             for i in range(10):
                 await message.channel.send(nameTag)
