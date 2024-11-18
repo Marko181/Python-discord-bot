@@ -10,7 +10,7 @@ import time
 import subprocess
 import random
 
-bot_version = " v: 2.1.3" 
+bot_version = " v: 2.1.5" 
 # Channel ID v ločeni datoteki
 channelID = 0
 channelID_BP = 0
@@ -164,17 +164,17 @@ async def on_message(message):
 
 
         # Meme list
-        if 'list meme' in message.content.lower():
+        if 'ls' in message.content.lower():
             files = [f for f in os.listdir("./files") if os.path.isfile(os.path.join("./files", f)) and not f.endswith(".txt")]
             if files:
                 file_list = "\n".join(files)  # Join file names with a newline for better formatting
-                await message.channel.send(f"Files:\n{file_list}")
+                await message.channel.send(f"Memes available just for you:\n{file_list}")
             else:
                 await message.channel.send("No files found.")
 
 
         # Random meme iz mape "files"
-        if 'random meme' in message.content.lower() or 'jazjaz' in message.content.lower(): 
+        if 'rnd meme' in message.content.lower() or 'jazjaz' in message.content.lower(): 
             files = [f for f in os.listdir("./files") if os.path.isfile(os.path.join("./files", f)) and not f.endswith(".txt")]
             
             # Check if there are any valid files to choose from
