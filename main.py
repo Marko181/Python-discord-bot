@@ -9,7 +9,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import time
 import subprocess
 
-bot_version = " v: 2.1.1" 
+bot_version = " v: 2.1.2" 
 # Channel ID v ločeni datoteki
 channelID = 0
 channelID_BP = 0
