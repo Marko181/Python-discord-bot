@@ -10,7 +10,7 @@ import time
 import subprocess
 import random
 
-bot_version = " v: 2.2.0" 
+bot_version = " v: 2.2.1" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -195,7 +195,7 @@ async def on_message(message):
                 files = [
                     os.path.join("./files", f)  # Full path to the file
                     for f in os.listdir("./files")
-                    if os.path.isfile(os.path.join("./files", f))
+                    if os.path.isfile(os.path.join("./files", f)) and not f.endswith(".txt")
                 ]
                 
                 if files:
@@ -207,7 +207,8 @@ async def on_message(message):
                 else:
                     await message.channel.send("No files found.")
             else:
-                await message.channel.send("Ne bo šlo, probej v #class-memes")
+                channel_mention = f"<#{channelID_CM}>"
+                await message.channel.send(f"Ne bo šlo, probej v {channel_mention}")
         
         # Hrana na bone
         if message.content.lower().startswith('hrana'):
