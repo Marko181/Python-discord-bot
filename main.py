@@ -10,7 +10,7 @@ import time
 import subprocess
 import random
 
-bot_version = " v: 2.1.7" 
+bot_version = " v: 2.1.8" 
 # Channel ID v ločeni datoteki
 channelID = 0
 channelID_BP = 0
@@ -101,7 +101,7 @@ async def on_message(message):
             await message.channel.send(whois_table())
         
         # Spam tag
-        if message.content.startswith('spam'):
+        if message.content.lower().startswith('spam'):
             # Extract everything after 'spam ' to get the user name
             nameTag = message.content[len('spam '):].strip()
             await message.delete()
@@ -141,7 +141,7 @@ async def on_message(message):
                 await message.channel.send('MA ZIPAM TI MAMO')
 
         # Specific meme
-        if message.content.startswith('meme'):
+        if message.content.lower().startswith('meme'):
             file_name = message.content[len('meme '):].strip()
             await message.delete()
             
@@ -192,7 +192,7 @@ async def on_message(message):
 
         
         # Hrana na bone
-        if message.content.startswith('hrana'):
+        if message.content.lower().startswith('hrana'):
             # Extract everything after 'hrana ' to get the restaurant name
             restaurant_name = message.content[len('hrana '):].strip()
             # Call your get_menu function with the extracted restaurant name
