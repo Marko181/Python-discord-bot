@@ -10,7 +10,7 @@ import time
 import subprocess
 import random
 
-bot_version = " v: 2.1.5" 
+bot_version = " v: 2.1.6" 
 # Channel ID v ločeni datoteki
 channelID = 0
 channelID_BP = 0
@@ -84,18 +84,6 @@ async def on_message(message):
             file = discord.File(gif_path)
             await message.channel.send(file=file)
         
-        # GIF - DarkMode (Dark mode)
-        if 'dark mode' in message.content.lower():
-            gif_path = './files/DarkMode.jpg'
-            file = discord.File(gif_path)
-            await message.channel.send(file=file)
-        
-        # GIF - Koporec (koporec)
-        if 'koporec' in message.content.lower():
-            gif_path = './files/koporec_meme.jpg'
-            file = discord.File(gif_path)
-            await message.channel.send(file=file)
-        
         # MEME - Mare (SkillIssue)
         if 'skill issue' in message.content.lower():
             gif_path = './files/SkillIssue.png'
@@ -113,7 +101,7 @@ async def on_message(message):
             await message.channel.send(whois_table())
         
         # Spam tag
-        if 'spam' in message.content.lower():
+        if message.content.startswith('spam'):
             # Extract everything after 'spam ' to get the user name
             nameTag = message.content[len('spam '):].strip()
             await message.delete()
@@ -149,7 +137,8 @@ async def on_message(message):
         
         # Zipam ti mamo
         if 'zip' in message.content.lower():
-            await message.channel.send('MA ZIPAM TI MAMO')
+            if random.random() < 0.1:
+                await message.channel.send('MA ZIPAM TI MAMO')
 
         # Specific meme
         if message.content.startswith('meme'):
