@@ -10,7 +10,7 @@ import time
 import subprocess
 import random
 
-bot_version = " v: 2.1.6" 
+bot_version = " v: 2.1.7" 
 # Channel ID v ločeni datoteki
 channelID = 0
 channelID_BP = 0
@@ -144,23 +144,39 @@ async def on_message(message):
         if message.content.startswith('meme'):
             file_name = message.content[len('meme '):].strip()
             await message.delete()
+            
             if file_name:
-                file_path = os.path.join("./files/", file_name)
-                file = discord.File(file_path)
-                await message.channel.send(file=file)
+                # List of allowed extensions
+                allowed_extensions = ['.png', '.jpg', '.gif']
+                file_path = None
+                
+                # Check for the file with any of the allowed extensions
+                for ext in allowed_extensions:
+                    potential_path = os.path.join("./files/", file_name + ext)
+                    if os.path.exists(potential_path):
+                        file_path = potential_path
+                        break
+                
+                if file_path:
+                    file = discord.File(file_path)
+                    await message.channel.send(file=file)
+                else:
+                    await message.channel.send("Nism najdu mema :(")
             else:
                 await message.channel.send("Nism najdu mema :(")
 
-
         # Meme list
         if 'ls' in message.content.lower():
-            files = [f for f in os.listdir("./files") if os.path.isfile(os.path.join("./files", f)) and not f.endswith(".txt")]
+            files = [
+                os.path.splitext(f)[0]  # Remove the extension from the file name
+                for f in os.listdir("./files")
+                if os.path.isfile(os.path.join("./files", f))
+            ]
             if files:
                 file_list = "\n".join(files)  # Join file names with a newline for better formatting
                 await message.channel.send(f"Memes available just for you:\n{file_list}")
             else:
                 await message.channel.send("No files found.")
-
 
         # Random meme iz mape "files"
         if 'rnd meme' in message.content.lower() or 'jazjaz' in message.content.lower(): 
