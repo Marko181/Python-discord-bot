@@ -10,7 +10,7 @@ import time
 import subprocess
 import random
 
-bot_version = " v: 2.2.1" 
+bot_version = " v: 2.2.2" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -130,7 +130,7 @@ async def on_message(message):
 
         # JOOOOOOJ
         if 'joo' in message.content.lower() or 'joj' in message.content.lower():
-            gif_path = './files/jernej.jpg'
+            gif_path = './files/jooj.jpg'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
         
