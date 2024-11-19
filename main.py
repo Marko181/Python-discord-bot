@@ -10,10 +10,9 @@ import time
 import subprocess
 import random
 
-bot_version = " v: 2.1.8" 
+bot_version = " v: 2.2.0" 
 # Channel ID v ločeni datoteki
-channelID = 0
-channelID_BP = 0
+channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
 user_ids = [0,0,0,0,0]
 intents = discord.Intents.all()
@@ -190,6 +189,25 @@ async def on_message(message):
             else:
                 await message.channel.send("Nism najdu mema :(")
 
+        # Send all them memez
+        if 'dump memez' in message.content.lower():
+            if message.channel.id == channelID_CM:
+                files = [
+                    os.path.join("./files", f)  # Full path to the file
+                    for f in os.listdir("./files")
+                    if os.path.isfile(os.path.join("./files", f))
+                ]
+                
+                if files:
+                    for file_path in files:
+                        # Send each file one by one
+                        file = discord.File(file_path)
+                        await message.channel.send(file=file)
+                        time.sleep(1)
+                else:
+                    await message.channel.send("No files found.")
+            else:
+                await message.channel.send("Ne bo šlo, probej v #class-memes")
         
         # Hrana na bone
         if message.content.lower().startswith('hrana'):
@@ -233,6 +251,11 @@ if __name__ == "__main__":
     with open(id_path3, 'r') as file:
         user_ids = [int(line.strip()) for line in file.readlines()]
         print(user_ids)
+
+    id_path4 = "./Classified/ChannelID_CM.txt"
+    with open(id_path4, 'r') as file:
+        channelID_CM = int(file.readline().strip())
+        print(channelID_BP)
 
     # BotKey v ločeni mapi
     keypath = "./Classified/BotKey.txt"
