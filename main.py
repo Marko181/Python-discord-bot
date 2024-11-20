@@ -11,7 +11,7 @@ import subprocess
 import random
 import aiohttp
 
-bot_version = " v: 2.2.4" 
+bot_version = " v: 2.2.5" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -212,20 +212,29 @@ async def on_message(message):
             else:
                 channel_mention = f"<#{channelID_CM}>"
                 await message.channel.send(f"Ne bo šlo, probej v {channel_mention}")
-
+        
         # Check if the message has attachments (e.g., uploaded images)
         if message.attachments:
-            for attachment in message.attachments:
-                if attachment.content_type and attachment.content_type.startswith('image/'):
-                    await message.channel.send(f"{message.author} sent an image!")
-                    sent_file_name = attachment.filename
+            if message.channel.id == channelID_CM:
+                for attachment in message.attachments:
+                    if attachment.content_type and attachment.content_type.startswith('image/'):
+                        # await message.channel.send(f"{message.author} sent an image!")
+                        sent_file_name = attachment.filename
+                        is_existing = sent_file_name in os.listdir(meme_folder)
 
-                    for f in os.listdir(meme_folder):
-                        if sent_file_name == f:
-                            pass
-                        else:
-                            await message.channel.send(f"Te slike še ni med memei, ali ga želiš shranit? (ja, ne)")
-                            if 'ja' in message.content():
+                        if not is_existing:
+                            await message.channel.send(f"Ta meme še ni shranjen, ga želiš shraniti? (ja, ne)")
+
+                        def check(msg):
+                            return (
+                                msg.author == message.author
+                                and msg.channel == message.channel
+                                and msg.content.lower() in ["ja", "ne"]
+                            )
+                        
+                        try:
+                            response = await client.wait_for("message", check=check, timeout=30)  # Wait for 30 seconds
+                            if response.content.lower() == "ja":
                                 # Construct the file path
                                 file_path = os.path.join(meme_folder, attachment.filename)
 
@@ -238,8 +247,9 @@ async def on_message(message):
 
                                 await message.channel.send(f"Saved {attachment.filename} to {meme_folder}!")
                             else:
-                                message.channel.send(f"Ne bom shranil slike.")
-
+                                await message.channel.send("Ne bom shranil slike.")
+                        except asyncio.TimeoutError:
+                            await message.channel.send("Čas je potekel, slika ne bo shranjena.")
 
         
         # Hrana na bone
