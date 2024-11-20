@@ -19,7 +19,7 @@ intents = discord.Intents.all()
 intents.message_content = True
 client = discord.Client(intents=intents)
 
-meme_folder = './filesmemes/'
+meme_folder = './files/'
 
 # Funkcija za pošiljanje sporočila z menzami
 async def send_menza_message():
