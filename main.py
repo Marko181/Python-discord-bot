@@ -19,6 +19,8 @@ intents = discord.Intents.all()
 intents.message_content = True
 client = discord.Client(intents=intents)
 
+meme_folder = './filesmemes/'
+
 # Funkcija za pošiljanje sporočila z menzami
 async def send_menza_message():
     try:
@@ -79,7 +81,7 @@ async def on_message(message):
         
         # GIF - Perš (CEF - Tyson)
         if 'cef' in message.content.lower():
-            gif_path = './files/cef.gif'
+            gif_path = meme_folder + 'cef.gif'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
         
