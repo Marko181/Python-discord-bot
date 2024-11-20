@@ -10,7 +10,7 @@ import time
 import subprocess
 import random
 
-bot_version = " v: 2.2.2" 
+bot_version = " v: 2.2.3" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -87,13 +87,13 @@ async def on_message(message):
         
         # MEME - Mare (SkillIssue)
         if 'skill issue' in message.content.lower():
-            gif_path = './files/SkillIssue.png'
+            gif_path = meme_folder + 'SkillIssue.png'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
         
         # Matlab - index (MatlabIndex)
         if 'matlab' in message.content.lower():
-            gif_path = './files/MatlabIndex.png'
+            gif_path = meme_folder + 'MatlabIndex.png'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
         
@@ -115,7 +115,7 @@ async def on_message(message):
         if 'ke tip' in message.content.lower():
             try:
                 await message.delete()  # Deletes the message
-                gif_path = './files/ke_tip.png'
+                gif_path = meme_folder + 'ke_tip.png'
                 file = discord.File(gif_path)  # Loads the file
                 await message.channel.send(file=file)  # Sends the file
             except FileNotFoundError:
@@ -126,13 +126,13 @@ async def on_message(message):
 
         # Minijon
         if 'jon' in message.content.lower():
-            gif_path = './files/minijon.gif'
+            gif_path = meme_folder + 'minijon.gif'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
 
         # JOOOOOOJ
         if 'joo' in message.content.lower() or 'joj' in message.content.lower():
-            gif_path = './files/jooj.jpg'
+            gif_path = meme_folder + 'jooj.jpg'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
         
@@ -153,7 +153,7 @@ async def on_message(message):
                 
                 # Check for the file with any of the allowed extensions
                 for ext in allowed_extensions:
-                    potential_path = os.path.join("./files/", file_name + ext)
+                    potential_path = os.path.join(meme_folder, file_name + ext)
                     if os.path.exists(potential_path):
                         file_path = potential_path
                         break
@@ -170,8 +170,8 @@ async def on_message(message):
         if 'ls' in message.content.lower():
             files = [
                 os.path.splitext(f)[0]  # Remove the extension from the file name
-                for f in os.listdir("./files")
-                if os.path.isfile(os.path.join("./files", f))
+                for f in os.listdir(meme_folder)
+                if os.path.isfile(os.path.join(meme_folder, f))
             ]
             if files:
                 file_list = "\n".join(files)  # Join file names with a newline for better formatting
@@ -181,11 +181,11 @@ async def on_message(message):
 
         # Random meme iz mape "files"
         if 'rnd meme' in message.content.lower() or 'jazjaz' in message.content.lower(): 
-            files = [f for f in os.listdir("./files") if os.path.isfile(os.path.join("./files", f)) and not f.endswith(".txt")]
+            files = [f for f in os.listdir(meme_folder) if os.path.isfile(os.path.join("./files", f)) and not f.endswith(".txt")]
             
             # Check if there are any valid files to choose from
             if files:
-                file_path = os.path.join("./files", random.choice(files))
+                file_path = os.path.join(meme_folder, random.choice(files))
                 file = discord.File(file_path)
                 await message.channel.send(file=file)
             else:
@@ -195,9 +195,9 @@ async def on_message(message):
         if 'dump memez' in message.content.lower():
             if message.channel.id == channelID_CM:
                 files = [
-                    os.path.join("./files", f)  # Full path to the file
-                    for f in os.listdir("./files")
-                    if os.path.isfile(os.path.join("./files", f)) and not f.endswith(".txt")
+                    os.path.join(meme_folder, f)  # Full path to the file
+                    for f in os.listdir(meme_folder)
+                    if os.path.isfile(os.path.join(meme_folder, f)) and not f.endswith(".txt")
                 ]
                 
                 if files:
