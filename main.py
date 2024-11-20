@@ -9,8 +9,9 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import time
 import subprocess
 import random
+import aiohttp
 
-bot_version = " v: 2.2.3" 
+bot_version = " v: 2.2.4" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -217,6 +218,28 @@ async def on_message(message):
             for attachment in message.attachments:
                 if attachment.content_type and attachment.content_type.startswith('image/'):
                     await message.channel.send(f"{message.author} sent an image!")
+                    sent_file_name = attachment.filename
+
+                    for f in os.listdir(meme_folder):
+                        if sent_file_name == f:
+                            pass
+                        else:
+                            await message.channel.send(f"Te slike še ni med memei, ali ga želiš shranit? (ja, ne)")
+                            if 'ja' in message.content():
+                                # Construct the file path
+                                file_path = os.path.join(meme_folder, attachment.filename)
+
+                                # Download and save the image
+                                async with aiohttp.ClientSession() as session:
+                                    async with session.get(attachment.url) as response:
+                                        if response.status == 200:
+                                            with open(file_path, 'wb') as f:
+                                                f.write(await response.read())
+
+                                await message.channel.send(f"Saved {attachment.filename} to {meme_folder}!")
+                            else:
+                                message.channel.send(f"Ne bom shranil slike.")
+
 
         
         # Hrana na bone
