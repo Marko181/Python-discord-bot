@@ -211,6 +211,13 @@ async def on_message(message):
             else:
                 channel_mention = f"<#{channelID_CM}>"
                 await message.channel.send(f"Ne bo šlo, probej v {channel_mention}")
+
+        # Check if the message has attachments (e.g., uploaded images)
+        if message.attachments:
+            for attachment in message.attachments:
+                if attachment.content_type and attachment.content_type.startswith('image/'):
+                    await message.channel.send(f"{message.author} sent an image!")
+
         
         # Hrana na bone
         if message.content.lower().startswith('hrana'):
