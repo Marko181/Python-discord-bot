@@ -12,7 +12,7 @@ import random
 import aiohttp
 import asyncio
 
-bot_version = " v: 2.3.0" 
+bot_version = " v: 2.3.1" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -266,27 +266,30 @@ async def on_message(message):
                 
         # Delete existing meme
         if 'delete meme ' in message.content.lower():
-            # Extract the file name after "delete meme "
-            meme_name = message.content[len('delete meme '):].strip()
-            
-            # Look for the file in the folder
-            files = [
-                f for f in os.listdir(meme_folder)
-                if os.path.isfile(os.path.join(meme_folder, f)) and os.path.splitext(f)[0] == meme_name
-            ]
-            
-            if files:
-                # Get the full path of the file
-                file_to_delete = os.path.join(meme_folder, files[0])
+            if message.author.id == user_ids[0] or message.author.id == user_ids[1] or message.author.id == user_ids[2] or message.author.id == user_ids[3] or message.author.id == user_ids[4]:
+                # Extract the file name after "delete meme "
+                meme_name = message.content[len('delete meme '):].strip()
                 
-                # Delete the file
-                os.remove(file_to_delete)
+                # Look for the file in the folder
+                files = [
+                    f for f in os.listdir(meme_folder)
+                    if os.path.isfile(os.path.join(meme_folder, f)) and os.path.splitext(f)[0] == meme_name
+                ]
                 
-                # Send confirmation to the Discord channel
-                await message.channel.send(f"Meme {meme_name} deleted!")
+                if files:
+                    # Get the full path of the file
+                    file_to_delete = os.path.join(meme_folder, files[0])
+                    
+                    # Delete the file
+                    os.remove(file_to_delete)
+                    
+                    # Send confirmation to the Discord channel
+                    await message.channel.send(f"Meme {meme_name} deleted!")
+                else:
+                    # If the file was not found
+                    await message.channel.send(f"Meme {meme_name} not found in {meme_folder}.")
             else:
-                # If the file was not found
-                await message.channel.send(f"Meme {meme_name} not found in {meme_folder}.")
+                await message.channel.send('Ja ne nč ne bo')
   
         # Hrana na bone
         if message.content.lower().startswith('hrana'):
