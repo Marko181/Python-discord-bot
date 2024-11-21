@@ -10,6 +10,7 @@ import time
 import subprocess
 import random
 import aiohttp
+import asyncio
 
 bot_version = " v: 2.2.5" 
 # Channel ID v ločeni datoteki
