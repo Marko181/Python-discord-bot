@@ -12,7 +12,7 @@ import random
 import aiohttp
 import asyncio
 
-bot_version = " v: 2.2.5" 
+bot_version = " v: 2.3.0" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
