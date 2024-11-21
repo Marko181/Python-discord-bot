@@ -214,30 +214,41 @@ async def on_message(message):
                 channel_mention = f"<#{channelID_CM}>"
                 await message.channel.send(f"Ne bo šlo, probej v {channel_mention}")
         
+        # Save new meme
         # Check if the message has attachments (e.g., uploaded images)
         if message.attachments:
             if message.channel.id == channelID_CM:
                 for attachment in message.attachments:
                     if attachment.content_type and attachment.content_type.startswith('image/'):
-                        # await message.channel.send(f"{message.author} sent an image!")
+                        # Check if the file already exists
                         sent_file_name = attachment.filename
                         is_existing = sent_file_name in os.listdir(meme_folder)
 
                         if not is_existing:
-                            await message.channel.send(f"Ta meme še ni shranjen, ga želiš shraniti? (ja, ne)")
+                            await message.channel.send(f"Ta meme še ni shranjen, ga želiš shraniti? (ja, ja ime_slike, ne)")
 
                         def check(msg):
                             return (
                                 msg.author == message.author
                                 and msg.channel == message.channel
-                                and msg.content.lower() in ["ja", "ne"]
+                                and (msg.content.lower() == "ja" or msg.content.lower().startswith("ja ") or msg.content.lower() == "ne")
                             )
-                        
+
                         try:
                             response = await client.wait_for("message", check=check, timeout=30)  # Wait for 30 seconds
-                            if response.content.lower() == "ja":
+                            if response.content.lower().startswith("ja"):
+                                # Check if a custom name is provided
+                                custom_name = response.content[3:].strip()  # Extract everything after "ja "
+                                if custom_name:
+                                    # Get the file extension from the original filename
+                                    _, file_extension = os.path.splitext(attachment.filename)
+                                    file_name = f"{custom_name}{file_extension}"  # Combine custom name and extension
+                                else:
+                                    # Use the original filename
+                                    file_name = attachment.filename
+
                                 # Construct the file path
-                                file_path = os.path.join(meme_folder, attachment.filename)
+                                file_path = os.path.join(meme_folder, file_name)
 
                                 # Download and save the image
                                 async with aiohttp.ClientSession() as session:
@@ -246,13 +257,37 @@ async def on_message(message):
                                             with open(file_path, 'wb') as f:
                                                 f.write(await response.read())
 
-                                await message.channel.send(f"Saved {attachment.filename} to {meme_folder}!")
+                                await message.channel.send(f"Saved {file_name} to {meme_folder}!")
                             else:
                                 await message.channel.send("Ne bom shranil slike.")
                         except asyncio.TimeoutError:
                             await message.channel.send("Čas je potekel, slika ne bo shranjena.")
 
-        
+                
+        # Delete existing meme
+        if 'delete meme ' in message.content.lower():
+            # Extract the file name after "delete meme "
+            meme_name = message.content[len('delete meme '):].strip()
+            
+            # Look for the file in the folder
+            files = [
+                f for f in os.listdir(meme_folder)
+                if os.path.isfile(os.path.join(meme_folder, f)) and os.path.splitext(f)[0] == meme_name
+            ]
+            
+            if files:
+                # Get the full path of the file
+                file_to_delete = os.path.join(meme_folder, files[0])
+                
+                # Delete the file
+                os.remove(file_to_delete)
+                
+                # Send confirmation to the Discord channel
+                await message.channel.send(f"Meme {meme_name} deleted!")
+            else:
+                # If the file was not found
+                await message.channel.send(f"Meme {meme_name} not found in {meme_folder}.")
+  
         # Hrana na bone
         if message.content.lower().startswith('hrana'):
             # Extract everything after 'hrana ' to get the restaurant name
