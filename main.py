@@ -12,7 +12,7 @@ import random
 import aiohttp
 import asyncio
 
-bot_version = " v: 2.3.1" 
+bot_version = " v: 2.3.2" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -36,7 +36,7 @@ async def send_menza_message():
 
 # Funkcija za pomoč z ukazi
 def bot_help():
-    pomoc = 'Ukazi, ki so na voljo:\n   menza - si lačn in na FE-ju\n    whois - izpiše IRL ime uporabnika\n    hrana x - izpis menija restavracije na bone (x - ustavi ime restavracije)\n  hrana random - ko res neveš kaj bi jedu\n   hrana pun - yes that\n  hrana fact - fun fact o hrani\n  ...in še in še samo se nam ni dalo pisat\n'
+    pomoc = 'Ukazi, ki so na voljo:\n   menza - si lačn in na FE-ju\n    whois - izpiše IRL ime uporabnika\n    hrana x - izpis menija restavracije na bone (x - ustavi ime restavracije)\n  hrana random - ko res neveš kaj bi jedu\n   hrana pun - yes that\n  hrana fact - fun fact o hrani\n ls - seznam memov\n meme x - specifičn meme\n dump memez - vsi memeji naenkrat\n  ...in še in še samo se nam ni dalo pisat\n'
     return pomoc
 
 # Se proži ob zagonu da se logina v server
@@ -81,24 +81,6 @@ async def on_message(message):
         if 'kinder jajček' in message.content.lower():
             await message.channel.send('https://media1.tenor.com/m/OD84C08uSMAAAAAd/world-war-z-chomp.gif')
         
-        # GIF - Perš (CEF - Tyson)
-        if 'cef' in message.content.lower():
-            gif_path = meme_folder + 'cef.gif'
-            file = discord.File(gif_path)
-            await message.channel.send(file=file)
-        
-        # MEME - Mare (SkillIssue)
-        if 'skill issue' in message.content.lower():
-            gif_path = meme_folder + 'SkillIssue.png'
-            file = discord.File(gif_path)
-            await message.channel.send(file=file)
-        
-        # Matlab - index (MatlabIndex)
-        if 'matlab' in message.content.lower():
-            gif_path = meme_folder + 'MatlabIndex.png'
-            file = discord.File(gif_path)
-            await message.channel.send(file=file)
-        
         # Izpis imen
         if 'whois' in message.content.lower():
             await message.channel.send(whois_table())
@@ -124,19 +106,6 @@ async def on_message(message):
                 await message.channel.send("Error: File not found.")
             except discord.Forbidden:
                 await message.channel.send("Error: Missing permissions to delete messages.")
-
-
-        # Minijon
-        if 'jon' in message.content.lower():
-            gif_path = meme_folder + 'minijon.gif'
-            file = discord.File(gif_path)
-            await message.channel.send(file=file)
-
-        # JOOOOOOJ
-        if 'joo' in message.content.lower() or 'joj' in message.content.lower():
-            gif_path = meme_folder + 'jooj.jpg'
-            file = discord.File(gif_path)
-            await message.channel.send(file=file)
         
         # Zipam ti mamo
         if 'zip' in message.content.lower():
@@ -168,8 +137,43 @@ async def on_message(message):
             else:
                 await message.channel.send("Nism najdu mema :(")
 
+        # GIF - Perš (CEF - Tyson)
+        elif 'cef' in message.content.lower():
+            gif_path = meme_folder + 'cef.gif'
+            file = discord.File(gif_path)
+            await message.channel.send(file=file)
+        
+        # MEME - Mare (SkillIssue)
+        elif 'skill issue' in message.content.lower():
+            gif_path = meme_folder + 'SkillIssue.png'
+            file = discord.File(gif_path)
+            await message.channel.send(file=file)
+        
+        # Matlab - index (MatlabIndex)
+        elif 'matlab' in message.content.lower():
+            gif_path = meme_folder + 'MatlabIndex.png'
+            file = discord.File(gif_path)
+            await message.channel.send(file=file)
+
+        elif 'koporc' in message.content.lower() or 'koporec' in message.content.lower():
+            gif_path = meme_folder + 'koporec_meme.png'
+            file = discord.File(gif_path)
+            await message.channel.send(file=file)
+
+        # Minijon
+        elif 'jon' in message.content.lower():
+            gif_path = meme_folder + 'minijon.gif'
+            file = discord.File(gif_path)
+            await message.channel.send(file=file)
+
+        # JOOOOOOJ
+        elif 'joo' in message.content.lower() or 'joj' in message.content.lower():
+            gif_path = meme_folder + 'jooj.jpg'
+            file = discord.File(gif_path)
+            await message.channel.send(file=file)
+
         # Meme list
-        if 'ls' in message.content.lower():
+        if message.content.lower().startswith('ls'):
             files = [
                 os.path.splitext(f)[0]  # Remove the extension from the file name
                 for f in os.listdir(meme_folder)
