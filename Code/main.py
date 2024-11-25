@@ -13,7 +13,7 @@ import aiohttp
 import asyncio
 
 # Version control naj bi bil avtomatski
-bot_version = " v: 2.3.7" 
+bot_version = " v: 2.3.8" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -53,16 +53,15 @@ async def on_ready():
             await channel.send(msg)
 
             # Check for errorReport.txt
-            error_file_path = "errorReport.txt"  # Adjust the path if needed
+            error_file_path = "./errorReport.txt"  # Adjust the path if needed
             if os.path.exists(error_file_path):
                 with open(error_file_path, 'r') as error_file:
                     error_content = error_file.read().strip()  # Read file content and strip any trailing whitespace
                     
                 # Suppress specific message
-                suppressed_message = "[INFO    ] discord.client: logging in using static token"
-                #if suppressed_message not in error_content:
+                if len(error_content) > 220:
                     # Send the contents of the error report
-                await channel.send(f"Error Report Found:\n```\n{error_content}\n```")
+                    await channel.send(f"Error Report Found:\n```\n{error_content}\n```")
         else:
             print("Target channel not found")
 
@@ -360,7 +359,7 @@ if __name__ == "__main__":
         print(channelID_BP)
 
     # BotKey v ločeni mapi
-    keypath = "./Classified/123BotKey.txt"
+    keypath = "./Classified/BotKey.txt"
     with open(keypath, 'r') as file:
         key = file.readline().strip()
 
