@@ -80,7 +80,10 @@ async def on_message(message):
         # GIF - Perš (Kinder jajček)
         if 'kinder jajček' in message.content.lower():
             await message.channel.send('https://media1.tenor.com/m/OD84C08uSMAAAAAd/world-war-z-chomp.gif')
-        
+                # LaTeX reply
+        elif ' latex' in message.content.lower():
+            await message.channel.send(r"Ste morda mislisi /latex \LaTeX")
+
         # Izpis imen
         if 'whois' in message.content.lower():
             await message.channel.send(whois_table())
@@ -156,7 +159,7 @@ async def on_message(message):
             await message.channel.send(file=file)
 
         elif 'koporc' in message.content.lower() or 'koporec' in message.content.lower():
-            gif_path = meme_folder + 'koporec_meme.png'
+            gif_path = meme_folder + 'koporec_meme.jpg'
             file = discord.File(gif_path)
             await message.channel.send(file=file)
 
