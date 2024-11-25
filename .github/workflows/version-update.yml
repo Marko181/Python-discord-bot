@@ -1,0 +1,73 @@
+name: Version Update
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Update version
+        run: |
+          FILE_PATH="main.py"
+          VERSION_PATTERN='bot_version = "v: ([0-9]+)\.([0-9]+)\.([0-9]+)"'
+
+          # Extract the latest commit message
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+
+          # Read and update version based on commit message
+          if [[ $COMMIT_MSG == major:* ]]; then
+              INCREMENT_TYPE="major"
+          elif [[ $COMMIT_MSG == minor:* ]]; then
+              INCREMENT_TYPE="minor"
+          elif [[ $COMMIT_MSG == fix:* ]]; then
+              INCREMENT_TYPE="fix"
+          else
+              echo "No version update needed."
+              exit 0
+          fi
+
+          # Extract version from the file
+          VERSION=$(grep -E "$VERSION_PATTERN" $FILE_PATH)
+          if [[ ! $VERSION =~ $VERSION_PATTERN ]]; then
+              echo "Version string not found in $FILE_PATH"
+              exit 1
+          fi
+
+          X=${BASH_REMATCH[1]}
+          Y=${BASH_REMATCH[2]}
+          Z=${BASH_REMATCH[3]}
+
+          # Update version based on increment type
+          if [[ $INCREMENT_TYPE == "major" ]]; then
+              X=$((X + 1))
+              Y=0
+              Z=0
+          elif [[ $INCREMENT_TYPE == "minor" ]]; then
+              Y=$((Y + 1))
+              Z=0
+          elif [[ $INCREMENT_TYPE == "fix" ]]; then
+              Z=$((Z + 1))
+          fi
+
+          # Replace the version in the file
+          NEW_VERSION="bot_version = \"v: $X.$Y.$Z\""
+          sed -i "s/$VERSION_PATTERN/$NEW_VERSION/" $FILE_PATH
+
+          # Commit the updated version
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add $FILE_PATH
+          git commit -m "Update version to v: $X.$Y.$Z"
+          git push
