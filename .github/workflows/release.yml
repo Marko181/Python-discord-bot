@@ -1,0 +1,28 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main # Replace 'main' with your default branch if different
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Use the version of Node.js your project supports
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Semantic Release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npx semantic-release

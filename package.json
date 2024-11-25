@@ -1,0 +1,19 @@
+{
+  "name": "python-discord-bot",
+  "version": "1.0.0",
+  "description": "- clone this git\r - add files like images in folder [files](files/)\r - add or edit code files\r - commit and push changes back to this git\r - change the version in [main.py](main.py)\r - run in discord server command \"BotUpdateNow\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.1",
+    "@semantic-release/npm": "^12.0.1",
+    "semantic-release": "^24.2.0"
+  }
+}
