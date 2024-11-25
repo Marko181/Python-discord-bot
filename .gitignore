@@ -1,6 +1,0 @@
-# ignore directories
-.gitignore
-__pycache__/
-Classified/
-Scripts/
-logfile.log
