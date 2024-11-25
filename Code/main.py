@@ -51,6 +51,15 @@ async def on_ready():
         if channel:
             msg = "Alive and ready!" + bot_version
             await channel.send(msg)
+
+            # Check for errorReport.txt
+            error_file_path = "errorReport.txt"  # Adjust the path if needed
+            if os.path.exists(error_file_path):
+                with open(error_file_path, 'r') as error_file:
+                    error_content = error_file.read().strip()  # Read file content and strip any trailing whitespace
+                    
+                # Send the contents of the error report
+                await channel.send(f"Error Report Found:\n```\n{error_content}\n```")
         else:
             print("Target channel not found")
 
@@ -348,7 +357,7 @@ if __name__ == "__main__":
         print(channelID_BP)
 
     # BotKey v ločeni mapi
-    keypath = "./Classified/ztsdnBotKey.txt"
+    keypath = "./Classified/BotKey.txt"
     with open(keypath, 'r') as file:
         key = file.readline().strip()
 
