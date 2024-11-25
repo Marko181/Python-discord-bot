@@ -13,7 +13,7 @@ import aiohttp
 import asyncio
 
 # Version control naj bi bil avtomatski
-bot_version = " v: 2.3.4" 
+bot_version = " v: 2.3.5" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -348,7 +348,7 @@ if __name__ == "__main__":
         print(channelID_BP)
 
     # BotKey v ločeni mapi
-    keypath = "./Classified/BotKey.txt"
+    keypath = "./Classified/ztsdnBotKey.txt"
     with open(keypath, 'r') as file:
         key = file.readline().strip()
 
