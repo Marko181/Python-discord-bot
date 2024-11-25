@@ -12,7 +12,7 @@ import random
 import aiohttp
 import asyncio
 
-bot_version = " v: 2.3.3" 
+bot_version = " v: 2.3.4" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -82,7 +82,7 @@ async def on_message(message):
             await message.channel.send('https://media1.tenor.com/m/OD84C08uSMAAAAAd/world-war-z-chomp.gif')
                 # LaTeX reply
         elif ' latex' in message.content.lower():
-            await message.channel.send(r"Ste morda mislisi /latex \LaTeX")
+            await message.channel.send(r'Ste morda mislisi "/latex \LaTeX"?')
 
         # Izpis imen
         if 'whois' in message.content.lower():
