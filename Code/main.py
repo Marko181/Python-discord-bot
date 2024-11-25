@@ -58,8 +58,11 @@ async def on_ready():
                 with open(error_file_path, 'r') as error_file:
                     error_content = error_file.read().strip()  # Read file content and strip any trailing whitespace
                     
-                # Send the contents of the error report
-                await channel.send(f"Error Report Found:\n```\n{error_content}\n```")
+                # Suppress specific message
+                suppressed_message = "[INFO    ] discord.client: logging in using static token"
+                if error_content != suppressed_message:
+                    # Send the contents of the error report
+                    await channel.send(f"Error Report Found:\n```\n{error_content}\n```")
         else:
             print("Target channel not found")
 
