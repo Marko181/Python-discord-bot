@@ -360,7 +360,7 @@ if __name__ == "__main__":
         print(channelID_BP)
 
     # BotKey v ločeni mapi
-    keypath = "./Classified/BotKey.txt"
+    keypath = "./Classified/123BotKey.txt"
     with open(keypath, 'r') as file:
         key = file.readline().strip()
 
