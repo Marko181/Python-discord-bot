@@ -13,7 +13,7 @@ import aiohttp
 import asyncio
 
 # Version control naj bi bil avtomatski
-bot_version = " v: 2.3.11" 
+bot_version = " v: 2.3.12" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -112,7 +112,7 @@ async def on_message(message):
         
         # Hello
         if 'hello bot' in message.content.lower() or 'helo bot' in message.content.lower():
-            await message.channel.send("Hello ", message.author)
+            await message.channel.send(f"Hello {message.author.mention}")
         
         # Ke Tip
         if 'ke tip' in message.content.lower():
