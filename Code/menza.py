@@ -302,17 +302,17 @@ def process_menu(txt):
     for i in range(0,len(txt)):
         try:
             #menu_temp, _ = [item.strip() for item in txt[i].split(":")]
-            #delimiter = ":" if ":" in txt[i] else ")"
-            if ":" in txt[i]:
-                delimiter = ":"
-            elif ")" in txt[i]:
-                delimiter = ")"
-            else:
-                # Split on the third space if neither ":" nor ")" is found
-                parts = re.split(r" ", txt[i], maxsplit=3)  # Split into up to 4 parts
-                menu_temp = " ".join(parts[:3]).strip()  # Combine the first 3 parts
-                _ = parts[3].strip() if len(parts) > 3 else ""  # Everything after the third space
-                return menu_temp, _
+            delimiter = ":" if ":" in txt[i] else ")"
+            # if ":" in txt[i]:
+            #     delimiter = ":"
+            # elif ")" in txt[i]:
+            #     delimiter = ")"
+            # else:
+            #     # Split on the third space if neither ":" nor ")" is found
+            #     parts = re.split(r" ", txt[i], maxsplit=3)  # Split into up to 4 parts
+            #     menu_temp = " ".join(parts[:3]).strip()  # Combine the first 3 parts
+            #     _ = parts[3].strip() if len(parts) > 3 else ""  # Everything after the third space
+            #     return menu_temp, _
             menu_temp, _ = [item.strip() for item in txt[i].split(delimiter)]
         except Exception as e:
             #print(e)
