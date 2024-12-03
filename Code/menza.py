@@ -346,7 +346,7 @@ def generate_text():
             soup = final_soup_salad(soups)
             salad = final_soup_salad(salads)
             if time < 9.59:
-                output_text = "A smo že lačni kolega? Bo treba najprej zajtrk jest." + '\n' + '\n' + "Menza_FE: " +  date + '\n' + soup + '\n' + salad + '\n'
+                output_text = "A smo že lačni kolega/ica? Bo treba najprej zajtrk jest." + '\n' + '\n' + "Menza_FE: " +  date + '\n' + soup + '\n' + salad + '\n'
             else:
                 output_text = "Menza_FE: " +  date + '\n' + soup + '\n' + salad + '\n'
 
