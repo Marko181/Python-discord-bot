@@ -4,6 +4,7 @@ import numpy as np
 from menza import * 
 from whois import *
 from hrana import *
+from llm import local_llm
 import update
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import time
@@ -13,7 +14,7 @@ import aiohttp
 import asyncio
 
 # Version control naj bi bil avtomatski
-bot_version = " v: 2.3.15" 
+bot_version = " v: 3.0.0" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -322,14 +323,20 @@ async def on_message(message):
             menu = main_restaurant(restaurant_name)
             # Send the resulting menu back to the channel
             await message.channel.send(menu)
-        
+
+        # Local LLM response
+        if message.content.lower().startswith('/tone'):
+            input_text = message.content[len('/tone '):].strip()
+            generated_response = local_llm(input_text)
+
+            await message.channel.send(generated_response)
+
         ######### !!! DANGEROUS ZONE - Update !!! #########
         if message.content.startswith('BotUpdateNow'):
             if message.author.id == user_ids[0] or message.author.id == user_ids[1] or message.author.id == user_ids[2] or message.author.id == user_ids[3] or message.author.id == user_ids[4]:
                 update.bot_git_update()
             else:
                 await message.channel.send('Ja ne nč ne bo')
-            
         
         # Status sporočilo
         if 'status' in message.content.lower():
