@@ -119,7 +119,7 @@ def local_llm(text_input, threads=20, custom_model="Meta-Llama-3-8B-Instruct.Q4_
             processed_output = output.strip()
     except Exception as e:
         # Catch any unexpected errors
-        processed_output = f"An error occurred: {str(e)}"
+        processed_output = f"An error occurred in llm.py: {str(e)}"
 
     # Limit the response length to 4000 because of discord message limit
     if len(processed_output) >= 4000:

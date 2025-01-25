@@ -14,7 +14,7 @@ import aiohttp
 import asyncio
 
 # Version control naj bi bil avtomatski
-bot_version = " v: 3.0.0" 
+bot_version = " v: 3.0.1" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -327,7 +327,10 @@ async def on_message(message):
         # Local LLM response
         if message.content.lower().startswith('/tone'):
             input_text = message.content[len('/tone '):].strip()
-            generated_response = local_llm(input_text)
+            #generated_response = local_llm(input_text)
+            
+            # Run the blocking function in a separate thread
+            generated_response = await asyncio.to_thread(local_llm, input_text)
 
             await message.channel.send(generated_response)
 
@@ -339,12 +342,12 @@ async def on_message(message):
                 await message.channel.send('Ja ne nč ne bo')
         
         # Status sporočilo
-        if 'status' in message.content.lower():
+        if message.content.lower().startswith('status'):
             response = "Awake and alive!" + bot_version
             await message.channel.send(response)
 
     except Exception as e:
-        await message.channel.send(f"An error occurred: {e}")
+        await message.channel.send(f"An error occurred in main.py: {e}")
 
 ############ START BOT ############
 if __name__ == "__main__":
