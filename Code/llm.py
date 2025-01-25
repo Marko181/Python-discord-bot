@@ -1,6 +1,36 @@
 from gpt4all import GPT4All
 import psutil
 
+def get_resource_stats():
+    ##############################################################
+    ################# Monitor resource usage #####################
+    ##############################################################
+
+    system_stats = f"""
+    CPU Usage: {psutil.cpu_percent(interval=1)}%
+    Per CPU Usage: {psutil.cpu_percent(interval=1, percpu=True)}
+
+    # Memory utilization
+    Total Memory: {psutil.virtual_memory().total / (1024 ** 3):.2f} GB
+    Used Memory: {psutil.virtual_memory().used / (1024 ** 3):.2f} GB
+    Memory Usage: {psutil.virtual_memory().percent}%
+
+    # Disk utilization
+    Total Disk Space: {psutil.disk_usage('/').total / (1024 ** 3):.2f} GB
+    Used Disk Space: {psutil.disk_usage('/').used / (1024 ** 3):.2f} GB
+    Disk Usage: {psutil.disk_usage('/').percent}%
+
+    # Network statistics
+    Bytes Sent: {psutil.net_io_counters().bytes_sent / (1024 ** 2):.2f} MB
+    Bytes Received: {psutil.net_io_counters().bytes_recv / (1024 ** 2):.2f} MB
+    """
+    print(system_stats)
+
+    if len(system_stats) >= 4000:
+        system_stats = system_stats[:3996] + "..."    
+
+    return system_stats
+
 def local_llm(text_input, threads=20, custom_model="Meta-Llama-3-8B-Instruct.Q4_0.gguf"):
 
     """
@@ -30,11 +60,15 @@ def local_llm(text_input, threads=20, custom_model="Meta-Llama-3-8B-Instruct.Q4_
 
     model = GPT4All(custom_model, n_threads=threads)
 
+    # Print out system resource stats
+    get_resource_stats()
+
     full_input = ""
 
     # Edit the input prompt
     if output_type == "short" and custom_model == "orca-mini-3b-gguf2-q4_0.gguf":
         full_input = f"Answer this question in one sentance: {text_input}"
+        num_tokens = 100
     elif output_type =="short" and custom_model == "Meta-Llama-3-8B-Instruct.Q4_0.gguf":
         #full_input = f"{text_input} After you answer the question write only: <end>"
         full_input = text_input
@@ -48,35 +82,6 @@ def local_llm(text_input, threads=20, custom_model="Meta-Llama-3-8B-Instruct.Q4_
     # Generate the response
     output = model.generate(full_input, max_tokens=num_tokens)
     #print("Unedited output: ", output)
-
-    ##############################################################
-    ################# Monitor resource usage #####################
-    ##############################################################
-
-    # CPU utilization
-    print(f"CPU Usage: {psutil.cpu_percent(interval=1)}%")
-    print(f"Per CPU Usage: {psutil.cpu_percent(interval=1, percpu=True)}")
-
-    # Memory utilization
-    memory = psutil.virtual_memory()
-    print(f"Total Memory: {memory.total / (1024 ** 3):.2f} GB")
-    print(f"Used Memory: {memory.used / (1024 ** 3):.2f} GB")
-    print(f"Memory Usage: {memory.percent}%")
-
-    # Disk utilization
-    disk = psutil.disk_usage('/')
-    print(f"Total Disk Space: {disk.total / (1024 ** 3):.2f} GB")
-    print(f"Used Disk Space: {disk.used / (1024 ** 3):.2f} GB")
-    print(f"Disk Usage: {disk.percent}%")
-
-    # Network statistics
-    net = psutil.net_io_counters()
-    print(f"Bytes Sent: {net.bytes_sent / (1024 ** 2):.2f} MB")
-    print(f"Bytes Received: {net.bytes_recv / (1024 ** 2):.2f} MB")
-
-    ##############################################################
-    ############# End of monitoring resource usage ###############
-    ##############################################################
     
     # Handle None, empty strings, or non-string outputs
     if not isinstance(output, str) or not output.strip():

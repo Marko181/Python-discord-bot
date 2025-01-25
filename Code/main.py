@@ -4,7 +4,7 @@ import numpy as np
 from menza import * 
 from whois import *
 from hrana import *
-from llm import local_llm
+from llm import local_llm, get_resource_stats
 import update
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import time
@@ -14,7 +14,7 @@ import aiohttp
 import asyncio
 
 # Version control naj bi bil avtomatski
-bot_version = " v: 3.0.1" 
+bot_version = " v: 3.0.2" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
@@ -34,7 +34,13 @@ async def send_menza_message():
         else:
             print("Channel not found")
     except Exception as e:
-        await channel.send(f"Error occurred in send_menza_message: {e}")
+        error_message = f"Error occurred in send_menza_message: {e}"
+
+        # Limit the response length to 4000 because of discord message limit
+        if len(error_message) >= 4000:
+            error_message = error_message[:3996] + "..."
+
+        await channel.send(error_message)
 
 # Funkcija za pomoč z ukazi
 def bot_help():
@@ -73,7 +79,13 @@ async def on_ready():
         scheduler.start()
 
     except Exception as e:
-        await channel.send(f"An error occurred: {e}")
+        error_message = f"An error occurred on startup: {e}"
+
+        # Limit the response length to 4000 because of discord message limit
+        if len(error_message) >= 4000:
+            error_message = error_message[:3996] + "..."
+
+        await channel.send(error_message)
 
 # Proženje ob pingu
 @client.event
@@ -328,11 +340,16 @@ async def on_message(message):
         if message.content.lower().startswith('/tone'):
             input_text = message.content[len('/tone '):].strip()
             #generated_response = local_llm(input_text)
-            
+
             # Run the blocking function in a separate thread
             generated_response = await asyncio.to_thread(local_llm, input_text)
 
             await message.channel.send(generated_response)
+
+        if message.content.lower().startswith('resources'):
+            resource_msg = get_resource_stats()
+            
+            await message.channel.send(resource_msg)
 
         ######### !!! DANGEROUS ZONE - Update !!! #########
         if message.content.startswith('BotUpdateNow'):
@@ -347,7 +364,12 @@ async def on_message(message):
             await message.channel.send(response)
 
     except Exception as e:
-        await message.channel.send(f"An error occurred in main.py: {e}")
+        error_msg = f"An error occurred in main.py: {e}"
+        
+        # Limit the response length to 4000 because of discord message limit
+        if len(error_msg) >= 4000:
+            error_msg = error_msg[:3996] + "..."
+        await message.channel.send(error_msg)
 
 ############ START BOT ############
 if __name__ == "__main__":
