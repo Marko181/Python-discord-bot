@@ -22,6 +22,12 @@ def local_llm(text_input, threads=20, custom_model="Meta-Llama-3-8B-Instruct.Q4_
         text_input = text_input.replace("--raw", "").strip()
         num_tokens = 250
 
+    # Select model based on user flag
+    if "--fast" in text_input:
+        custom_model = "orca-mini-3b-gguf2-q4_0.gguf"
+    else:
+        custom_model = "Meta-Llama-3-8B-Instruct.Q4_0.gguf"
+
     model = GPT4All(custom_model, n_threads=threads)
 
     full_input = ""
