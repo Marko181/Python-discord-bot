@@ -1,7 +1,6 @@
 from gpt4all import GPT4All
 import psutil
 
-
 def get_resource_stats():
     ##############################################################
     ################# Monitor resource usage #####################
@@ -42,35 +41,6 @@ def local_llm(text_input, threads=20, custom_model="Meta-Llama-3-8B-Instruct.Q4_
     
     output_type = "short"
     num_tokens=50
-    temperature = 0.1   # default temperature
-
-    # Check if temperature flag is present
-    temp_flag_index = text_input.find("--temperature=")
-    if temp_flag_index == -1:
-        temp_flag_index = text_input.find("--temperatura=")
-
-    if temp_flag_index != -1:
-        # Start of the temperature value just after "="
-        start_index = temp_flag_index + (len("--temperature=") if temp_flag_index == text_input.find("--temperature=") else len("--temperatura="))
-        end_index = text_input.find(" ", start_index)
-
-        if end_index == -1:  # If no spaces after the value, use the end of the string
-            end_index = len(text_input)
-
-        try:
-
-            # Extract the temperature value and convert it to float
-            temperature = float(text_input[start_index:end_index])
-
-            if temperature > 0.99 or temperature < 0:
-                return "Error: Temperature value must be between 0 and 0.99."
-        except ValueError:
-            return "Error: Invalid temperature value."
-
-        # Remove the temperature part from the input string
-        text_input = text_input[:temp_flag_index].strip() + ' ' + text_input[end_index:].strip()
-
-    
     
     # Set the flag for text length
     if "--long" in text_input:
@@ -88,7 +58,7 @@ def local_llm(text_input, threads=20, custom_model="Meta-Llama-3-8B-Instruct.Q4_
     else:
         custom_model = "Meta-Llama-3-8B-Instruct.Q4_0.gguf"
 
-    model = GPT4All(custom_model, n_threads=threads, temperature=temperature)
+    model = GPT4All(custom_model, n_threads=threads)
 
     # Print out system resource stats
     get_resource_stats()
