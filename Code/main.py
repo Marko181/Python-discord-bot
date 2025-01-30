@@ -392,7 +392,7 @@ async def on_message(message):
 
         # Info grafika
         if message.content.startswith('BotInfo'):
-            await message.channel.send("Bot writen by: Marko K., Tilen T.,Jakob K., Vitan K. and Luka M.")
+            await message.channel.send("Bot writen by: Marko K., Tilen T.,Jakob K., Vitan K. and Luka M.") # Names
             response = textwrap.dedent(
             """
             /$$$$$$$$        /$$$$$$$              /$$    
@@ -408,7 +408,9 @@ async def on_message(message):
                                                         
             """)
 
-            await message.channel.send(f"\n```\n{response}\n```")
+            await message.channel.send(f"\n```\n{response}\n```") # print grafike
+            # TODO
+            #await message.channel.send("")
 
 
     except Exception as e:
