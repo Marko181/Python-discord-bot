@@ -389,6 +389,7 @@ async def on_message(message):
             response = "Awake and alive!" + bot_version
             await message.channel.send(response)
 
+
         # Info grafika
         if message.content.lower().startswith('BotInfo'):
             await message.channel.send("Bot writen by: Marko K., Tilen T.,Jakob K., Vitan K. and Luka M.")
@@ -402,7 +403,8 @@ async def on_message(message):
                 \/      \/       \/             
             """)
 
-            await message.channel.send(f"```\n{response}\n```")
+            await message.channel.send(f"Bot writen by: Marko K., Tilen T.,Jakob K., Vitan K. and Luka M.\n```\n{response}\n```")
+
 
     except Exception as e:
         error_msg = f"An error occurred in main.py: {e}"
