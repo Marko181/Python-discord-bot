@@ -13,7 +13,6 @@ import random
 import aiohttp
 import asyncio
 import textwrap
-import shutil
 
 # Version control naj bi bil avtomatski
 bot_version = " v: 3.0.3" 
@@ -394,18 +393,22 @@ async def on_message(message):
         # Info grafika
         if message.content.startswith('BotInfo'):
             await message.channel.send("Bot writen by: Marko K., Tilen T.,Jakob K., Vitan K. and Luka M.")
-            terminal_width = shutil.get_terminal_size((50, 20)).columns
-            ascii_art = """
-            ___________   __________        __   
-            \_   _____/___\______   \ _____/  |_ 
-            |    __)/ __ \|    |  _//  _ \   __\ 
-            |     \\  ___/|    |   (  <_> )  |  
-            \___  / \___  >______  /\____/|__|  
-                \/      \/       \/             
+            response = textwrap.dedent(
             """
-            
-            formatted_art = "\n".join(line.center(terminal_width) for line in ascii_art.split("\n"))
-            await message.channel.send(f"```\n{formatted_art}\n```")
+            /$$$$$$$$        /$$$$$$$              /$$    
+            | $$_____/       | $$__  $$            | $$    
+            | $$     /$$$$$$ | $$  \ $$  /$$$$$$  /$$$$$$  
+            | $$$$$ /$$__  $$| $$$$$$$  /$$__  $$|_  $$_/  
+            | $$__/| $$$$$$$$| $$__  $$| $$  \ $$  | $$    
+            | $$   | $$_____/| $$  \ $$| $$  | $$  | $$ /$$
+            | $$   |  $$$$$$$| $$$$$$$/|  $$$$$$/  |  $$$$/
+            |__/    \_______/|_______/  \______/    \___/  
+                                                        
+                                                        
+                                                        
+            """)
+
+            await message.channel.send(f"\n```\n{response}\n```")
 
 
     except Exception as e:
