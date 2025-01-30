@@ -6,4 +6,4 @@ def bot_git_update(branch = "main"):
     subprocess.run([script_path, "--branch", branch], check = False)
 
 def bot_reboot():
-    subprocess.run(["bash", "./Scripts/BotReboot.sh"], check=False)
+    subprocess.run(["bash", "./Scripts/BotReboot.sh"], check=True)

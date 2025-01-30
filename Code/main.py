@@ -388,6 +388,18 @@ async def on_message(message):
             response = "Awake and alive!" + bot_version
             await message.channel.send(response)
 
+        if message.content.lower().startswith('BotInfo'):
+            response = """
+            ___________   __________        __   
+            \_   _____/___\______   \ _____/  |_ 
+            |    __)/ __ \|    |  _//  _ \   __\
+            |     \\  ___/|    |   (  <_> )  |  
+            \___  / \___  >______  /\____/|__|  
+                \/      \/       \/             
+
+            """
+            await message.channel.send(response)
+
         
 
     except Exception as e:
