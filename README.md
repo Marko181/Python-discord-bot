@@ -1,5 +1,5 @@
-# Python bot for Discord server
-
+# Python bot for Discord server                                            
+```bash
 
  /$$$$$$$$        /$$$$$$$              /$$    
 | $$_____/       | $$__  $$            | $$    
@@ -12,6 +12,7 @@
                                                
                                                
                                                
+```
 ## Bot auto update:
 - clone this git
 - add files like images in folder [files](files/)
