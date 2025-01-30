@@ -377,6 +377,7 @@ async def on_message(message):
         # Reboot bota
         if message.content.startswith('BotRebootNow'):
             if message.author.id in user_ids[:5]:  # Check if user is authorized
+                await message.channel.send(f"Rebootma bota...")
                 update.bot_reboot()
             else:
                 await message.channel.send('Noup, nič ne bo.')
