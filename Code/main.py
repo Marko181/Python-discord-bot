@@ -373,11 +373,21 @@ async def on_message(message):
                 update.bot_git_update(branch)
             else:
                 await message.channel.send('Ja ne, nič ne bo.')
+
+        # Reboot bota
+        if message.content.startswith('BotRebootNow'):
+            if message.author.id in user_ids[:5]:  # Check if user is authorized
+                update.bot_reboot()
+            else:
+                await message.channel.send('Noup, nič ne bo.')
+
         
         # Status sporočilo
         if message.content.lower().startswith('status'):
             response = "Awake and alive!" + bot_version
             await message.channel.send(response)
+
+        
 
     except Exception as e:
         error_msg = f"An error occurred in main.py: {e}"
