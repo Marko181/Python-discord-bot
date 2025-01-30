@@ -391,7 +391,7 @@ async def on_message(message):
 
 
         # Info grafika
-        if message.content.lower().startswith('BotInfo'):
+        if message.content.startswith('BotInfo'):
             await message.channel.send("Bot writen by: Marko K., Tilen T.,Jakob K., Vitan K. and Luka M.")
             response = textwrap.dedent(
             """
