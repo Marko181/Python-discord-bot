@@ -12,6 +12,7 @@ import subprocess
 import random
 import aiohttp
 import asyncio
+import textwrap
 
 # Version control naj bi bil avtomatski
 bot_version = " v: 3.0.3" 
@@ -390,16 +391,16 @@ async def on_message(message):
 
         # Info grafika
         if message.content.lower().startswith('BotInfo'):
-            response = """
+            response = textwrap.dedent("""
             ___________   __________        __   
             \_   _____/___\______   \ _____/  |_ 
             |    __)/ __ \|    |  _//  _ \   __\
             |     \\  ___/|    |   (  <_> )  |  
             \___  / \___  >______  /\____/|__|  
                 \/      \/       \/             
-
-            """
-            await message.channel.send(response)
+            """)
+            
+            await message.channel.send(f"```\n{response}\n```")
 
         
 
