@@ -353,10 +353,26 @@ async def on_message(message):
 
         ######### !!! DANGEROUS ZONE - Update !!! #########
         if message.content.startswith('BotUpdateNow'):
-            if message.author.id == user_ids[0] or message.author.id == user_ids[1] or message.author.id == user_ids[2] or message.author.id == user_ids[3] or message.author.id == user_ids[4]:
-                update.bot_git_update()
+            if message.author.id in user_ids[:5]:  # Check if user is authorized
+                parts = message.content.split()
+                branch = "main"  # Default branch
+                
+                # Check if --branch argument is provided
+                if "--branch" in parts:
+                    try:
+                        branch_index = parts.index("--branch") + 1
+                        if branch_index < len(parts):
+                            branch = parts[branch_index]  # Get branch name
+                        else:
+                            await message.channel.send("Napaka: manjka ime branch-a.")
+                            return
+                    except ValueError:
+                        pass  # If not found, default to "main"
+
+                await message.channel.send(f"Clonam branch: `{branch}` ...")
+                update.bot_git_update(branch)
             else:
-                await message.channel.send('Ja ne nč ne bo')
+                await message.channel.send('Ja ne, nič ne bo.')
         
         # Status sporočilo
         if message.content.lower().startswith('status'):
