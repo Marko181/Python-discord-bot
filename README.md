@@ -45,4 +45,6 @@
 - **`hrana.py`**: Fetches restaurant menus and provides food-related puns and facts.
 - **`menza.py`**: Scrapes and formats the university cafeteria menu.
 - **`whois.py`**: Placeholder for future user information features.
+- **`update.py`**: Allows bot update from Discord.
+- **`llm.py`**: Llama3... directly in discord.
 
