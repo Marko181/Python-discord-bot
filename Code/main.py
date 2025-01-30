@@ -395,15 +395,15 @@ async def on_message(message):
             await message.channel.send("Bot writen by: Marko K., Tilen T.,Jakob K., Vitan K. and Luka M.")
             response = textwrap.dedent(
             """
-            ___________   __________        __   
-            \_   _____/___\______   \ _____/  |_ 
-            |    __)/ __ \|    |  _//  _ \   __\
-            |     \\  ___/|    |   (  <_> )  |  
-            \___  / \___  >______  /\____/|__|  
-                \/      \/       \/             
+            ___________     __________          __   
+            \_   _____/____ \______   \  ____ _/  |_ 
+            |    __)_/ __ \ |    |  _/ /  _ \\   __\
+            |     \ \  ___/ |    |   \(  <_> )|  |  
+            \___  /  \___  >|______  / \____/ |__|  
+                \/       \/        \/                         
             """)
 
-            await message.channel.send(f"Bot writen by: Marko K., Tilen T.,Jakob K., Vitan K. and Luka M.\n```\n{response}\n```")
+            await message.channel.send(f"\n```\n{response}\n```")
 
 
     except Exception as e:
