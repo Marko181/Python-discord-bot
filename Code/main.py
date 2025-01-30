@@ -388,6 +388,7 @@ async def on_message(message):
             response = "Awake and alive!" + bot_version
             await message.channel.send(response)
 
+        # Info grafika
         if message.content.lower().startswith('BotInfo'):
             response = """
             ___________   __________        __   
