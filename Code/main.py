@@ -391,7 +391,9 @@ async def on_message(message):
 
         # Info grafika
         if message.content.lower().startswith('BotInfo'):
-            response = textwrap.dedent("""
+            await message.channel.send("Bot writen by: Marko K., Tilen T.,Jakob K., Vitan K. and Luka M.")
+            response = textwrap.dedent(
+            """
             ___________   __________        __   
             \_   _____/___\______   \ _____/  |_ 
             |    __)/ __ \|    |  _//  _ \   __\
@@ -399,10 +401,8 @@ async def on_message(message):
             \___  / \___  >______  /\____/|__|  
                 \/      \/       \/             
             """)
-            
-            await message.channel.send(f"```\n{response}\n```")
 
-        
+            await message.channel.send(f"```\n{response}\n```")
 
     except Exception as e:
         error_msg = f"An error occurred in main.py: {e}"
