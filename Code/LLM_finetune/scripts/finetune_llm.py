@@ -3,12 +3,15 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments,
 from peft import get_peft_model, LoraConfig, TaskType
 from datasets import load_dataset
 from trl import SFTTrainer
+import os
 
 # TODO
-"""BASE_MODEL = 
-OUTPUT_MODEL = 
-DATASET_PATH = 
-"""
+BASE_MODEL = "mistralai/Mistral-7B-v0.1"
+OUTPUT_MODEL = "./models/fine_tuned_model"
+DATASET_PATH = "./data/TODO"
+
+os.makedirs(OUTPUT_MODEL, exist_ok=True)
+
 
 print("Loading model...")
 model = AutoModelForCausalLM.from_pretrained(BASE_MODEL, device_map="auto", torch_dtype=torch.float16)
@@ -20,7 +23,7 @@ dataset = load_dataset("json", data_files=DATASET_PATH, split="train")
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,   # 4bit quantization
     bnb_4bit_compute_dtype=torch.float16,
-    bnb_4bit_doutle_quant=True,
+    bnb_4bit_double_quant=True,
     bnb_4bit_quant_type="nf4"
 )
 
