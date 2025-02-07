@@ -44,7 +44,7 @@ def scrape_tripadvisor_reviews(restaurant_url, restaurant_name, num_pages=3):
     
     # Set up Chrome driver
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--headless")  # Run without opening a window
+    #chrome_options.add_argument("--headless")  # Run without opening a window
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--disable-gpu")
@@ -55,49 +55,50 @@ def scrape_tripadvisor_reviews(restaurant_url, restaurant_name, num_pages=3):
     driver.get(restaurant_url)
     time.sleep(5)  # Wait for page to load
 
-    for page in range(num_pages):  # Scrape multiple pages of reviews
-        print(f"Scraping page {page+1}...")
 
-        # Wait for reviews to load
-        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[@data-test-target='reviews-tab']")))
 
-        # Find all review blocks
-        reviews = driver.find_elements(By.XPATH, "//div[@data-test-target='HR_CC_CARD']")
+    # Wait for reviews to load
+    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, '//*[@id="REVIEWS"]/div[2]/div[2]/div[2]/div/div[1]')))
 
-        for review in reviews:
-            try:
-                reviewer_name = review.find_element(By.XPATH, ".//a[contains(@class, 'ui_header_link')]").text
-            except:
-                reviewer_name = "Unknown"
+    # Find all review blocks
+    reviews_section = driver.find_element(By.XPATH, '//*[@id="REVIEWS"]/div[2]/div[2]/div[2]/div/div[1]')
+    reviews = reviews_section.find_elements(By.XPATH, ".//div[contains(@class, 'review-container')]")
 
-            try:
-                rating = review.find_element(By.XPATH, ".//span[contains(@class, 'ui_bubble_rating')]").get_attribute("class")
-                rating = rating.split("_")[-1]  # Extract rating number (e.g., "ui_bubble_rating bubble_50" -> "50")
-                rating = str(int(rating) / 10)  # Convert to 1-5 scale
-            except:
-                rating = "No Rating"
 
-            try:
-                review_date = review.find_element(By.XPATH, ".//span[contains(@class, 'ratingDate')]").get_attribute("title")
-            except:
-                review_date = "Unknown Date"
-
-            try:
-                review_text = review.find_element(By.XPATH, ".//q[contains(@class, 'IRsGHoPm')]").text
-            except:
-                review_text = "No Review Text"
-
-            # Save the review to the database
-            save_review(restaurant_name, reviewer_name, rating, review_date, review_text)
-
-        # Find and click "Next" button to go to the next page
+    for review in reviews:
         try:
-            next_button = driver.find_element(By.XPATH, "//a[@class='ui_button nav next primary ']")
-            driver.execute_script("arguments[0].click();", next_button)
-            time.sleep(5)  # Wait for next page to load
+            reviewer_name = review.find_element(By.XPATH, ".//a[contains(@class, 'ui_header_link')]").text
         except:
-            print("No more pages available.")
-            break  # Stop scraping if there is no next page
+            reviewer_name = "Unknown"
+
+        try:
+            rating = review.find_element(By.XPATH, ".//span[contains(@class, 'ui_bubble_rating')]").get_attribute("class")
+            rating = rating.split("_")[-1]  # Extract rating number (e.g., "ui_bubble_rating bubble_50" -> "50")
+            rating = str(int(rating) / 10)  # Convert to 1-5 scale
+        except:
+            rating = "No Rating"
+
+        try:
+            review_date = review.find_element(By.XPATH, ".//span[contains(@class, 'ratingDate')]").get_attribute("title")
+        except:
+            review_date = "Unknown Date"
+
+        try:
+            review_text = review.find_element(By.XPATH, ".//q[contains(@class, 'IRsGHoPm')]").text
+        except:
+            review_text = "No Review Text"
+
+        # Save the review to the database
+        save_review(restaurant_name, reviewer_name, rating, review_date, review_text)
+
+    # Find and click "Next" button to go to the next page
+    try:
+        next_button = driver.find_element(By.XPATH, "//a[@class='ui_button nav next primary ']")
+        driver.execute_script("arguments[0].click();", next_button)
+        time.sleep(5)  # Wait for next page to load
+    except:
+        print("No more pages available.")
+        
 
     # Close the browser
     driver.quit()
@@ -109,3 +110,6 @@ if __name__ == "__main__":
     restaurant_url = "https://www.tripadvisor.com/Restaurant_Review-g274873-d803011-Reviews-Pizzeria_FoculuS-Ljubljana_Upper_Carniola_Region.html"  # Replace with actual TripAdvisor URL
     restaurant_name = "Pizzeria FoculuS"
     scrape_tripadvisor_reviews(restaurant_url, restaurant_name, num_pages=5)
+
+  
+# //*[@id="REVIEWS"]/div[2]/div[2]/div[2]/div/div[1]
