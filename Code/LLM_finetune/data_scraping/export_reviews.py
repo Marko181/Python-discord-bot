@@ -2,7 +2,7 @@ import sqlite3
 import json
 import os
 
-DB_NAME = "restaurant_reviews.db"
+DB_NAME = "google_reviews.db"
 OUTPUT_JSON = "restaurant_reviews.json"
 
 def export_reviews_to_json():
