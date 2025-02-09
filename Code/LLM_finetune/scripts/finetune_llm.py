@@ -8,7 +8,7 @@ import os
 # Model and paths
 BASE_MODEL = "mistralai/Mistral-7B-v0.1"
 OUTPUT_MODEL = "./models/fine_tuned_model"
-DATASET_PATH = "./data/restaurant_reviews.json"  # Updated path
+DATASET_PATH = "/content/Python-discord-bot/Code/LLM_finetune/data_scraping/restaurant_reviews.json"  # Updated path
 
 os.makedirs(OUTPUT_MODEL, exist_ok=True)
 
