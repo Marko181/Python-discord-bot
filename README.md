@@ -13,6 +13,7 @@
                                                
                                                
 ```
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/Marko181/Python-discord-bot/tree/LLM_tuning/Code/LLM_finetune/scripts/run.ipynb)
 ## Bot auto update:
 - clone this git
 - add files like images in folder [files](files/)
