@@ -1,3 +1,5 @@
+import time
+import sqlite3
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -5,8 +7,6 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
-import time
-import sqlite3
 
 # Database setup
 DB_NAME = "google_reviews.db"
@@ -54,6 +54,31 @@ def scrape_google_reviews(restaurant_name, num_reviews=20):
     driver.get("https://www.google.com/maps")
     time.sleep(3)  # Wait for page to load
 
+
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    time.sleep(3)  # Wait for the page to scroll down
+    # Handle cookie consent window
+    """ try:
+        accept_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'VfPpkd-vQzf8d') and contains(text(), 'Accept all')]"))
+        )
+        accept_button.click()
+        time.sleep(3)  # Wait for the consent window to close
+    except:
+        print("Could not find the 'Accept all' button. Continuing...")"""
+
+
+    try:
+        WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, '/html/body/div/div[2]/div[1]/div[3]/form[2]')))
+        accept_cookies_button = driver.find_element(By.XPATH, '/html/body/div/div[2]/div[1]/div[3]/form[2]')
+        accept_cookies_button.click()
+    except Exception as e:
+        print("Cookie consent dialog not found or already handled.", e)
+
+    # Wait for the page to load
+    time.sleep(2)
+
+
     # Search for the restaurant
     search_box = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH, "//input[@id='searchboxinput']"))
@@ -72,14 +97,14 @@ def scrape_google_reviews(restaurant_name, num_reviews=20):
     except:
         print("Could not click the first result. Continuing...")
 
-    # Scroll down to reviews
+    """# Scroll down to reviews
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(3)
+    time.sleep(3)"""
 
     # Click on "More Reviews"
     try:
         more_reviews_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[contains(@aria-label, 'More reviews')]"))
+            EC.element_to_be_clickable((By.XPATH, "//button[contains(@aria-label, 'Reviews')]"))
         )
         more_reviews_button.click()
         time.sleep(5)  # Wait for reviews to load
@@ -129,8 +154,15 @@ def scrape_google_reviews(restaurant_name, num_reviews=20):
     driver.quit()
     print(f"Successfully scraped {len(reviews)} reviews for {restaurant_name}")
 
+def read_restaurant_list(file_path):
+    """Reads a list of restaurant names from a file."""
+    with open(file_path, 'r') as file:
+        return [line.strip() for line in file]
+
 # Example usage
 if __name__ == "__main__":
     create_database()
-    restaurant_name = "Pizzeria FoculuS"  # Change this to the restaurant name
-    scrape_google_reviews(restaurant_name, num_reviews=20)
+    restaurant_list = read_restaurant_list('restaurants.txt')
+    for restaurant_name in restaurant_list:
+        scrape_google_reviews(restaurant_name, num_reviews=20)
+        time.sleep(10)  # Delay between consequtive scrapes to avoid detection
