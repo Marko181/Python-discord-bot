@@ -43,6 +43,24 @@ async def send_menza_message():
 
         await channel.send(error_message)
 
+# Funkcija za pošiljanje naključnega meme-a ob 10h
+async def send_random_image():
+    try:
+        channel = client.get_channel(channelID)
+        if channel:
+            images = [f for f in os.listdir(meme_folder) if f.lower().endswith(('png', 'jpg', 'jpeg', 'gif'))]
+
+            if images:
+                random_image = random.choice(images)
+                image_path = os.path.join(meme_folder, random_image)
+                await channel.send(file=discord.File(image_path))
+            else:
+                await channel.send("No images found in the folder.")
+        else:
+            print("Channel not found")
+    except Exception as e:
+        print(f"Error occurred in send_random_image: {e}")
+
 # Funkcija za pomoč z ukazi
 def bot_help():
     pomoc = 'Ukazi, ki so na voljo:\n   menza - si lačn in na FE-ju\n    whois - izpiše IRL ime uporabnika\n    hrana x - izpis menija restavracije na bone (x - ustavi ime restavracije)\n  hrana random - ko res neveš kaj bi jedu\n   hrana pun - yes that\n  hrana fact - fun fact o hrani\n ls - seznam memov\n meme x - specifičn meme\n dump memez - vsi memeji naenkrat\n  ...in še in še samo se nam ni dalo pisat\n'
@@ -74,9 +92,11 @@ async def on_ready():
             print("Target channel not found")
 
         print(f'Logged in as {client.user}')
+        
         # Proženje ob določeni uri
         scheduler = AsyncIOScheduler()
-        scheduler.add_job(send_menza_message, 'cron', day_of_week='mon-fri', hour=10, minute=0, month='1-5,10-12')
+        #scheduler.add_job(send_menza_message, 'cron', day_of_week='mon-fri', hour=10, minute=0, month='1-5,10-12')
+        scheduler.add_job(send_random_image, 'cron', day_of_week='mon-fri', hour=10, minute=0, month='1-5,10-12')
         scheduler.start()
 
     except Exception as e:
