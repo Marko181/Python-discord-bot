@@ -96,10 +96,10 @@ async def on_ready():
         # Proženje ob določeni uri
         scheduler = AsyncIOScheduler()
         #scheduler.add_job(send_menza_message, 'cron', day_of_week='mon-fri', hour=10, minute=0, month='1-5,10-12')
-        #scheduler.add_job(send_random_image, 'cron', day_of_week='mon-fri', hour=10, minute=0, month='1-5,10-12')
+        scheduler.add_job(send_random_image, 'cron', day_of_week='mon-fri', hour=10, minute=0, month='1-5,10-12')
         
         # Test code
-        scheduler.add_job(send_random_image, 'cron', day_of_week='mon-fri', hour=20, minute=35, month='1-5,10-12')
+        #scheduler.add_job(send_random_image, 'cron', day_of_week='mon-fri', hour=20, minute=35, month='1-5,10-12')
         scheduler.start()
 
     except Exception as e:
