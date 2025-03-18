@@ -46,7 +46,7 @@ async def send_menza_message():
 # Funkcija za pošiljanje naključnega meme-a ob 10h
 async def send_random_image():
     try:
-        channel = client.get_channel(channelID)
+        channel = client.get_channel(channelID_CM)
         if channel:
             images = [f for f in os.listdir(meme_folder) if f.lower().endswith(('png', 'jpg', 'jpeg', 'gif'))]
 
@@ -99,7 +99,7 @@ async def on_ready():
         #scheduler.add_job(send_random_image, 'cron', day_of_week='mon-fri', hour=10, minute=0, month='1-5,10-12')
         
         # Test code
-        scheduler.add_job(send_random_image, 'cron', day_of_week='mon-fri', hour=20, minute=10, month='1-5,10-12')
+        scheduler.add_job(send_random_image, 'cron', day_of_week='mon-fri', hour=20, minute=35, month='1-5,10-12')
         scheduler.start()
 
     except Exception as e:
