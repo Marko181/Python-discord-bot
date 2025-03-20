@@ -15,7 +15,7 @@ import asyncio
 import textwrap
 
 # Version control naj bi bil avtomatski
-bot_version = " v: 3.1.3" 
+bot_version = " v: 3.1.4" 
 # Channel ID v ločeni datoteki
 channelID, channelID_BP, channelID_CM = 0, 0, 0
 # User ID v ločeni datoteki
