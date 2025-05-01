@@ -46,7 +46,7 @@ intents.message_content = True
 
 # Instantiate the bot (we're not using any prefix-based commands,
 # just raw on_message listeners in our Cogs)
-bot = commands.Bot(command_prefix="", intents=intents)
+bot = commands.Bot(command_prefix="\x00", intents=intents)
 
 # Register all Cogs
 bot.add_cog(LifecycleCog(bot))
