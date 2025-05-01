@@ -84,3 +84,18 @@ class LifecycleCog(commands.Cog):
                     logging.error(error_msg)
             except Exception:
                 logging.exception("Failed to send startup error message:")
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        # only for testing, ignore the bot itself
+        if message.author == self.bot.user:
+            return
+
+        # simple ping→pong check
+        if message.content.lower() == "ping":
+            await message.channel.send("pong")
+
+        # if you want, you can add more quick checks here:
+        if message.content.lower() == "version":
+            await message.channel.send(f"I'm running v{bot_version}")
+    
