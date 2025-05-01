@@ -1,4 +1,4 @@
 def whois_table():
     output = "ne dela še"
-    print(output)
+    #print(output)
     return output
