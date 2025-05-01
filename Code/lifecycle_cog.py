@@ -95,7 +95,6 @@ class LifecycleCog(commands.Cog):
         if message.content.lower() == "ping":
             await message.channel.send("pong")
 
-        # if you want, you can add more quick checks here:
-        # if message.content.lower() == "version":
-        #     await message.channel.send(f"I'm running v{bot_version}")
+        if message.content.lower() == "pong":
+            await message.channel.send("ping")
     
