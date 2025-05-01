@@ -35,14 +35,14 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'Clas
 from classified import BotConfig
 
 # import your Cog classes
-from cogs.lifecycle_cog import LifecycleCog
-from cogs.help_cog      import HelpCog
-from cogs.menza_cog     import MenzaCog
-from cogs.whois_cog     import WhoisCog
-from cogs.hrana_cog     import HranaCog
-from cogs.meme_cog      import MemeCog
-from cogs.llm_cog       import LLMCog
-from cogs.admin_cog     import AdminCog
+from lifecycle_cog import LifecycleCog
+from help_cog      import HelpCog
+from menza_cog     import MenzaCog
+from whois_cog     import WhoisCog
+from hrana_cog     import HranaCog
+from meme_cog      import MemeCog
+from llm_cog       import LLMCog
+from admin_cog     import AdminCog
 
 
 class MyBot(commands.Bot):
