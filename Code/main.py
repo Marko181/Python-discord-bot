@@ -36,28 +36,28 @@ from classified import BotConfig
 
 # import your Cog classes
 from lifecycle_cog import LifecycleCog
-# from help_cog      import HelpCog
-# from menza_cog     import MenzaCog
-# from hrana_cog     import HranaCog
-# from meme_cog      import MemeCog
-# from llm_cog       import LLMCog
-# from admin_cog     import AdminCog
+from help_cog      import HelpCog
+from menza_cog     import MenzaCog
+from hrana_cog     import HranaCog
+from meme_cog      import MemeCog
+from llm_cog       import LLMCog
+from admin_cog     import AdminCog
 
 
 class MyBot(commands.Bot):
     def __init__(self):
-        super().__init__(command_prefix="\x00", intents=discord.Intents.default())
+        super().__init__(command_prefix="/", intents=discord.Intents.all())
         self.intents.message_content = True
 
     async def setup_hook(self):
         # this is run *once*, before login
         await self.add_cog(LifecycleCog(self))
-        # await self.add_cog(HelpCog(self))
-        # await self.add_cog(MenzaCog(self))
-        # await self.add_cog(HranaCog(self))
-        # await self.add_cog(MemeCog(self))
-        # await self.add_cog(LLMCog(self))
-        # await self.add_cog(AdminCog(self))
+        await self.add_cog(HelpCog(self))
+        await self.add_cog(MenzaCog(self))
+        await self.add_cog(HranaCog(self))
+        await self.add_cog(MemeCog(self))
+        await self.add_cog(LLMCog(self))
+        await self.add_cog(AdminCog(self))
 
 
 async def main():
