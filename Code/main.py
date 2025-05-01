@@ -54,7 +54,6 @@ class MyBot(commands.Bot):
         await self.add_cog(LifecycleCog(self))
         await self.add_cog(HelpCog(self))
         await self.add_cog(MenzaCog(self))
-        await self.add_cog(WhoisCog(self))
         await self.add_cog(HranaCog(self))
         await self.add_cog(MemeCog(self))
         await self.add_cog(LLMCog(self))
