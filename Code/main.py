@@ -35,6 +35,13 @@ from meme_cog import MemeCog
 from llm_cog import LLMCog
 from admin_cog import AdminCog
 
+logging.basicConfig(
+    level=logging.INFO,                     # show INFO and above
+    format="%(asctime)s [%(levelname)5s] %(name)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    filename="errorReport.txt", filemode="a"     # uncomment to write into a file
+)
+
 logging.info("Starting main.py")
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Classified')))
@@ -42,7 +49,7 @@ from classified import BotConfig
 BOT_VERSION_PATH = "./version.txt"
 with open(BOT_VERSION_PATH, 'r') as file:
     bot_version = file.read().strip()
-    
+
 logging.info("Imported classified")
 logging.info(f"Bot version v {bot_version}")
 
