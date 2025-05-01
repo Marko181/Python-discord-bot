@@ -21,60 +21,51 @@ files/
 └── meme4.gif
 """
 
-import sys
-import os
+# main.py
+
+import sys, os, logging, asyncio
 import discord
 from discord.ext import commands
-import logging
 
-from lifecycle_cog import LifecycleCog
-from help_cog import HelpCog
-from menza_cog import MenzaCog
-from hrana_cog import HranaCog
-from meme_cog import MemeCog
-from llm_cog import LLMCog
-from admin_cog import AdminCog
+# configure logging…
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 
-logging.basicConfig(
-    level=logging.INFO,                     # show INFO and above
-    format="%(asctime)s [%(levelname)5s] %(name)s: %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-    filename="errorReport.txt", filemode="a"     # uncomment to write into a file
-)
-
-logging.info("Starting main.py")
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Classified')))
+# tell Python where to find Classified/
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'Classified')))
 from classified import BotConfig
-BOT_VERSION_PATH = "./version.txt"
-with open(BOT_VERSION_PATH, 'r') as file:
-    bot_version = file.read().strip()
 
-logging.info("Imported classified")
-logging.info(f"Bot version v {bot_version}")
+# import your Cog classes
+from cogs.lifecycle_cog import LifecycleCog
+from cogs.help_cog      import HelpCog
+from cogs.menza_cog     import MenzaCog
+from cogs.whois_cog     import WhoisCog
+from cogs.hrana_cog     import HranaCog
+from cogs.meme_cog      import MemeCog
+from cogs.llm_cog       import LLMCog
+from cogs.admin_cog     import AdminCog
 
-# Path to the folder where memes and images are stored
-MEME_FOLDER: str = './files/memes/'
 
-# Configure intents
-intents = discord.Intents.default() # intents = discord.Intents.all()
-intents.message_content = True
+class MyBot(commands.Bot):
+    def __init__(self):
+        super().__init__(command_prefix="\x00", intents=discord.Intents.default())
+        self.intents.message_content = True
 
-# Instantiate the bot (we're not using any prefix-based commands,
-# just raw on_message listeners in our Cogs)
-bot = commands.Bot(command_prefix="\x00", intents=intents)
+    async def setup_hook(self):
+        # this is run *once*, before login
+        await self.add_cog(LifecycleCog(self))
+        await self.add_cog(HelpCog(self))
+        await self.add_cog(MenzaCog(self))
+        await self.add_cog(WhoisCog(self))
+        await self.add_cog(HranaCog(self))
+        await self.add_cog(MemeCog(self))
+        await self.add_cog(LLMCog(self))
+        await self.add_cog(AdminCog(self))
 
-# Register all Cogs
-bot.add_cog(LifecycleCog(bot))
-bot.add_cog(HelpCog(bot))
-bot.add_cog(MenzaCog(bot))
-bot.add_cog(HranaCog(bot))
-bot.add_cog(MemeCog(bot))
-bot.add_cog(LLMCog(bot))
-bot.add_cog(AdminCog(bot))
+
+async def main():
+    bot = MyBot()
+    logging.info("Starting bot")
+    await bot.start(BotConfig.BOT_KEY)
 
 if __name__ == "__main__":
-    # Run the bot with the token from classified.py
-    logging.info("Starting bot")
-    bot.run(BotConfig.BOT_KEY)
-    logging.info("Bot running")
+    asyncio.run(main())
