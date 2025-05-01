@@ -18,12 +18,14 @@ class HelpCog(commands.Cog):
                 " - hrana random: Ko res neveš kaj bi jedu\n"
                 " - hrana pun: Yes that\n"
                 " - hrana fact: Fun fact o hrani\n"
-                " - ls: Seznam memov\n"
+                " - ls memes: Seznam memov\n"
                 " - meme x: Specifičn meme\n"
                 " - dump memez: Vsi memeji naenkrat\n"
                 " - rndmeme: Random meme\n"
                 " - tone <x>: Lokalni LLM ki ti odgovori na <x>\n"
-                " - resources: Obremenitev strežnika ki poganja bota"
+                " - resources: Obremenitev strežnika ki poganja bota\n"
+                " - ping: pong\n"
+                " - pong: ping\n"
                 "...in še in še samo se nam ni dalo pisat\n"
         )
 

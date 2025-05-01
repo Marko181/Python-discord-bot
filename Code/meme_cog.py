@@ -142,7 +142,7 @@ class MemeCog(commands.Cog):
             return await message.channel.send(file=discord.File(os.path.join(BotConfig.MEME_FOLDER, 'jooj.jpg')))
 
         # List available memes
-        if lower.startswith('ls'):
+        if lower.startswith('ls memes'):
             files = [
                 os.path.splitext(f)[0]
                 for f in os.listdir(BotConfig.MEME_FOLDER)
