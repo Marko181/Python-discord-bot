@@ -38,7 +38,6 @@ from classified import BotConfig
 from lifecycle_cog import LifecycleCog
 from help_cog      import HelpCog
 from menza_cog     import MenzaCog
-from whois_cog     import WhoisCog
 from hrana_cog     import HranaCog
 from meme_cog      import MemeCog
 from llm_cog       import LLMCog
