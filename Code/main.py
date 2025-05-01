@@ -25,6 +25,7 @@ import sys
 import os
 import discord
 from discord.ext import commands
+import logging
 
 from lifecycle_cog import LifecycleCog
 from help_cog import HelpCog
@@ -34,8 +35,16 @@ from meme_cog import MemeCog
 from llm_cog import LLMCog
 from admin_cog import AdminCog
 
+logging.info("Starting main.py")
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Classified')))
 from classified import BotConfig
+BOT_VERSION_PATH = "./version.txt"
+with open(BOT_VERSION_PATH, 'r') as file:
+    bot_version = file.read().strip()
+    
+logging.info("Imported classified")
+logging.info(f"Bot version v {bot_version}")
 
 # Path to the folder where memes and images are stored
 MEME_FOLDER: str = './files/memes/'
@@ -59,4 +68,6 @@ bot.add_cog(AdminCog(bot))
 
 if __name__ == "__main__":
     # Run the bot with the token from classified.py
+    logging.info("Starting bot")
     bot.run(BotConfig.BOT_KEY)
+    logging.info("Bot running")
