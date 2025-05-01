@@ -11,8 +11,14 @@ import discord
 from discord.ext import commands
 
 # Ensure we can import BotConfig
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Classified')))
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Classified')))
+
+CLASSIFIED_PATH = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "Classified")
+)
+sys.path.insert(0, CLASSIFIED_PATH)
 from classified import BotConfig
+
 
 # Scheduled task: send a random meme/image
 async def send_random_image(bot: commands.Bot):
