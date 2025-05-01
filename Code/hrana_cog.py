@@ -39,14 +39,14 @@ class HranaCog(commands.Cog):
             try:
                 # Fetch the menu or fact/pun
                 menu = main_restaurant(restaurant_name)
-                if len(menu) >= 4000:
-                    menu = menu[:3980] + "..."
+                if len(menu) >= 2000:
+                    menu = menu[:1980] + "..."
                 await message.channel.send(menu)
             except Exception as e:
                 err = f"Error in hrana command: {e}"
                 # Truncate to avoid Discord's 2000-char limit
                 if len(err) >= 2000:
-                    err = err[:3980] + "..."
+                    err = err[:1980] + "..."
                 logging.exception("HranaCog failed:")
                 await message.channel.send(err)
 

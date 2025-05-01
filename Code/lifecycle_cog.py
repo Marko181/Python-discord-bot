@@ -42,8 +42,8 @@ class LifecycleCog(commands.Cog):
                     
                     # Suppress specific message
                     if len(content) > 220:
-                        if len(content) >= 4000:
-                            content = content[:3996] + "..."
+                        if len(content) >= 2000:
+                            content = content[:1980] + "..."
                         await channel.send(f"Error Report Found:\n```\n{content}\n```")
             else:
                 logging.warning("LifecycleCog: BotPlayground channel not found.")
@@ -74,8 +74,8 @@ class LifecycleCog(commands.Cog):
         except Exception as e:
             # Catch-all: truncate if too long and try to report back
             error_msg = f"An error occurred on startup: {e}"
-            if len(error_msg) >= 4000:
-                error_msg = error_msg[:3996] + "..."
+            if len(error_msg) >= 2000:
+                error_msg = error_msg[:1980] + "..."
             try:
                 err_chan = self.bot.get_channel(BotConfig.CHANNEL_ID_BOTPLAYGROUND)
                 if err_chan:
@@ -96,6 +96,6 @@ class LifecycleCog(commands.Cog):
             await message.channel.send("pong")
 
         # if you want, you can add more quick checks here:
-        if message.content.lower() == "version":
-            await message.channel.send(f"I'm running v{bot_version}")
+        # if message.content.lower() == "version":
+        #     await message.channel.send(f"I'm running v{bot_version}")
     
