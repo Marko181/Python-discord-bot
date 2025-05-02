@@ -16,10 +16,9 @@
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/Marko181/Python-discord-bot/tree/LLM_tuning/Code/LLM_finetune/scripts/run.ipynb)
 ## Bot auto update:
 - clone this git
-- add files like images in folder [files](files/)
 - add or edit code files
-- commit and push changes back to this git
-- change the version in [main.py](main.py)
+- call the function [bump.py](bump.py) following with either "fix", "feature" or "major"
+  ```bash python bump.py fix This is commit message ```
 - run in discord server command "BotUpdateNow"
 
 ## Idea:
