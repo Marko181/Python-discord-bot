@@ -8,6 +8,7 @@ import aiohttp
 import logging
 
 import discord
+from discord import app_commands
 from discord.ext import commands
 
 # Ensure we can import BotConfig
@@ -248,6 +249,37 @@ class MemeCog(commands.Cog):
                 await message.channel.send("Ja ne nč ne bo")
             return
 
+    @app_commands.command(
+        name="meme",
+        description="Pick and send one of the saved memes"
+    )
+    @app_commands.describe(meme_name="Name of the meme (without extension)")
+    async def slash_meme(self, interaction: discord.Interaction, meme_name: str):
+        await interaction.response.defer()
+        for ext in ('.png', '.jpg', '.jpeg', '.gif'):
+            fn = os.path.join(BotConfig.MEME_FOLDER, meme_name + ext)
+            if os.path.exists(fn):
+                return await interaction.followup.send(file=discord.File(fn))
+        await interaction.followup.send(f"Nism najdu mema `{meme_name}` :(")
+
+    @slash_meme.autocomplete("meme_name")
+    async def meme_autocomplete(
+        self,
+        interaction: discord.Interaction,
+        current: str
+    ) -> list[app_commands.Choice[str]]:
+        files = [
+            os.path.splitext(f)[0]
+            for f in os.listdir(BotConfig.MEME_FOLDER)
+            if os.path.isfile(os.path.join(BotConfig.MEME_FOLDER, f))
+        ]
+        # filter by what user has typed so far
+        choices = [
+            app_commands.Choice(name=name, value=name)
+            for name in files
+            if name.lower().startswith(current.lower())
+        ][:25]
+        return choices
 
 def setup(bot: commands.Bot):
     """discord.py extension hook."""
