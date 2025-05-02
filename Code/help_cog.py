@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 
 # List every command/keyword you want to suggest for:
-KNOWN_COMMANDS = [
+ORIGINAL_COMMANDS = [
     "help",
     "menza",
     "whois",
@@ -25,6 +25,10 @@ KNOWN_COMMANDS = [
     "BotUpdateNow",
     "BotRebootNow",
 ]
+
+# build a lowercase→original map
+COMMAND_MAP = {cmd.lower(): cmd for cmd in ORIGINAL_COMMANDS}
+LOWER_COMMANDS = list(COMMAND_MAP.keys())
 
 class HelpCog(commands.Cog):
     """
@@ -66,18 +70,19 @@ class HelpCog(commands.Cog):
             return await message.channel.send(self.help_text)
 
         # 2) Otherwise see if they tried one of our known triggers
-        for cmd in KNOWN_COMMANDS:
+        for cmd in LOWER_COMMANDS:
             # simple startswith check; adjust as needed
             if lower.startswith(cmd):
                 return  # let the other Cog handle it
 
         # 3) If it’s a single word (or at least first token), try a typo fix
         first = lower.split()[0]
-        suggestions = difflib.get_close_matches(first, KNOWN_COMMANDS, n=2, cutoff=0.6)
+        suggestions = difflib.get_close_matches(first, LOWER_COMMANDS, n=2, cutoff=0.75)
         if suggestions:
             # only suggest if the “distance” isn’t too big
-            note = ", ".join(f"`{s}`" for s in suggestions)
-            await message.channel.send(f"Did you mean: {note}?")
+            pretty = [COMMAND_MAP[m] for m in suggestions]
+            note = ", ".join(f"`{p}`" for p in pretty)
+            await message.channel.send(f"Did you mean: {note}")
         # else: ignore completely
 
         # # If the message starts with "help", send the help text
