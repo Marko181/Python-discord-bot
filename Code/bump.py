@@ -59,7 +59,7 @@ def main():
         run_git(['add', '.'])
         run_git(['commit', '-m', commit_msg])
         run_git(['push'])
-        print("Git add/commit/push complete.")
+        print(f"Git add/commit/push complete. v{version_str}")
     except subprocess.CalledProcessError as e:
         print(f"Git command failed: {e}")
         print("Rolling back version change...")
