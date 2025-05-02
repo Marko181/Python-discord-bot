@@ -70,6 +70,7 @@ class LifecycleCog(commands.Cog):
                 args=[self.bot],
             )
             self.scheduler.start()
+            await self.bot.tree.sync()
 
         except Exception as e:
             # Catch-all: truncate if too long and try to report back
