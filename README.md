@@ -17,7 +17,7 @@
 ## Bot auto update:
 - clone this git
 - add or edit code files
-- call the function [Code/bump.py](bump.py) following with either "fix", "feature" or "major" then followed by the commit message
+- call the function [bump.py](Code/bump.py) following with either "fix", "feature" or "major" then followed by the commit message
   ```bash
   python bump.py fix This is commit message
 - run in discord server command "BotUpdateNow"
@@ -39,7 +39,7 @@
    pip install -r requirements.txt
 4. Add a .txt files with your channel ID, bot key and user IDs
 6. Enable necessary settings in your Discord server
-7. Run [main.py](main.py)
+7. Run [main.py](Code/main.py)
 
 ## Script functions:
 - **`main.py`**: Runs the Discord bot, handles events, and communicates with users.
