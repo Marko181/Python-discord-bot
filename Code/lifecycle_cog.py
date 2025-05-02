@@ -44,7 +44,7 @@ class LifecycleCog(commands.Cog):
                     if len(content) > 220:
                         if len(content) >= 2000:
                             content = content[:1980] + "..."
-                        await channel.send(f"Error Report Found:\n```\n{content}\n```")
+                        await channel.send(f"Log File Found:\n```\n{content}\n```")
             else:
                 logging.warning("LifecycleCog: BotPlayground channel not found.")
 

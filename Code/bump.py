@@ -47,8 +47,9 @@ def main():
 
     # bump version.txt
     ver_file = Path(__file__).parent / "version.txt"
-    version = read_version(ver_file)
-    new_version = bump(version, level)
+    old_version  = read_version(ver_file)
+    new_version = bump(old_version , level)
+    
     write_version(ver_file, new_version)
     version_str = f"{new_version[0]}.{new_version[1]}.{new_version[2]}"
     print(f"Bumped to version {version_str}")
@@ -61,6 +62,9 @@ def main():
         print("Git add/commit/push complete.")
     except subprocess.CalledProcessError as e:
         print(f"Git command failed: {e}")
+        print("Rolling back version change...")
+        write_version(ver_file, old_version)
+        print(f"Version restored to {old_version[0]}.{old_version[1]}.{old_version[2]}")
         sys.exit(1)
 
 if __name__ == "__main__":
