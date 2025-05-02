@@ -1,7 +1,30 @@
 # help_cog.py
 
+import difflib
 import discord
 from discord.ext import commands
+
+# List every command/keyword you want to suggest for:
+KNOWN_COMMANDS = [
+    "help",
+    "menza",
+    "whois",
+    "hrana",
+    "hrana random",
+    "hrana pun",
+    "hrana fact",
+    "ls memes",
+    "rnd meme",
+    "dump memez",
+    "meme",          # for raw "meme foo"
+    "/meme",         # your slash
+    "/tone",
+    "resources",
+    "status",
+    "BotInfo",
+    "BotUpdateNow",
+    "BotRebootNow",
+]
 
 class HelpCog(commands.Cog):
     """
@@ -19,10 +42,10 @@ class HelpCog(commands.Cog):
                 " - hrana pun: Yes that\n"
                 " - hrana fact: Fun fact o hrani\n"
                 " - ls memes: Seznam memov\n"
-                " - meme x: Specifičn meme\n"
+                " - /meme x: Specifičn meme\n"
                 " - dump memez: Vsi memeji naenkrat\n"
-                " - rndmeme: Random meme\n"
-                " - tone <x>: Lokalni LLM ki ti odgovori na <x>\n"
+                " - rnd meme: Random meme\n"
+                " - /tone <x>: Lokalni LLM ki ti odgovori na <x>\n"
                 " - resources: Obremenitev strežnika ki poganja bota\n"
                 " - ping: pong\n"
                 " - pong: ping\n"
@@ -35,9 +58,31 @@ class HelpCog(commands.Cog):
         if message.author == self.bot.user:
             return
 
-        # If the message starts with "help", send the help text
-        if message.content.lower().startswith("help"):
-            await message.channel.send(self.help_text)
+        content = message.content.strip()
+        lower = content.lower()
+
+        # 1) If they asked for help exactly, show help
+        if lower == "help":
+            return await message.channel.send(self.help_text)
+
+        # 2) Otherwise see if they tried one of our known triggers
+        for cmd in KNOWN_COMMANDS:
+            # simple startswith check; adjust as needed
+            if lower.startswith(cmd):
+                return  # let the other Cog handle it
+
+        # 3) If it’s a single word (or at least first token), try a typo fix
+        first = lower.split()[0]
+        suggestions = difflib.get_close_matches(first, KNOWN_COMMANDS, n=2, cutoff=0.6)
+        if suggestions:
+            # only suggest if the “distance” isn’t too big
+            note = ", ".join(f"`{s}`" for s in suggestions)
+            await message.channel.send(f"Did you mean: {note}?")
+        # else: ignore completely
+
+        # # If the message starts with "help", send the help text
+        # if message.content.lower().startswith("help"):
+        #     await message.channel.send(self.help_text)
 
 
 def setup(bot: commands.Bot):
