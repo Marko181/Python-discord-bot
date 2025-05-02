@@ -18,7 +18,8 @@
 - clone this git
 - add or edit code files
 - call the function [bump.py](bump.py) following with either "fix", "feature" or "major"
-  ```bash python bump.py fix This is commit message ```
+  ```bash
+  python bump.py fix This is commit message
 - run in discord server command "BotUpdateNow"
 
 ## Idea:
