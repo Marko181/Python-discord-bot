@@ -171,24 +171,42 @@ class VoiceCog(commands.Cog):
 
         await interaction.response.send_message(f"▶️ Now playing `{file_name}`")
 
+    # @play.autocomplete("file_name")
+    # async def play_autocomplete(
+    #     self,
+    #     interaction: discord.Interaction,
+    #     current: str
+    # ) -> list[app_commands.Choice[str]]:
+    #     """Autocomplete MP3 filenames in the music folder."""
+    #     choices = []
+    #     try:
+    #         await ensure_music_folder()
+    #         for fname in os.listdir(MUSIC_FOLDER):
+    #             if fname.lower().endswith(".mp3") and fname.lower().startswith(current.lower()):
+    #                 choices.append(app_commands.Choice(name=fname, value=fname))
+    #                 if len(choices) >= 25:
+    #                     break
+    #     except Exception:
+    #         logging.exception("Error during play_autocomplete")
+    #     return choices
     @play.autocomplete("file_name")
-    async def play_autocomplete(
-        self,
-        interaction: discord.Interaction,
-        current: str
-    ) -> list[app_commands.Choice[str]]:
-        """Autocomplete MP3 filenames in the music folder."""
-        choices = []
+    async def play_autocomplete(self, interaction: discord.Interaction, current: str):
+        logging.info(f"[AUTOCOMPLETE] Autocomplete triggered with: {current=}")
         try:
             await ensure_music_folder()
+            choices = []
             for fname in os.listdir(MUSIC_FOLDER):
+                logging.info(f"[AUTOCOMPLETE] Checking: {fname}")
                 if fname.lower().endswith(".mp3") and fname.lower().startswith(current.lower()):
                     choices.append(app_commands.Choice(name=fname, value=fname))
                     if len(choices) >= 25:
                         break
+            logging.info(f"[AUTOCOMPLETE] Returning {len(choices)} choices")
+            return choices
         except Exception:
-            logging.exception("Error during play_autocomplete")
-        return choices
+            logging.exception("Autocomplete failed!")
+            return []
+
 
     #
     # 4) /stop slash command
