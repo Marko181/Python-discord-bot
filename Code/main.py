@@ -28,7 +28,12 @@ import discord
 from discord.ext import commands
 
 # configure logging…
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s [%(filename)s:%(lineno)d] %(name)s: %(message)s",
+    filename="log_file.log",
+    filemode="w"  # use "w" to overwrite each time, "a" to continue writing
+)
 
 # tell Python where to find Classified/
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'Classified')))
