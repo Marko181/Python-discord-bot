@@ -18,6 +18,7 @@ ORIGINAL_COMMANDS = [
     "dump memez",
     "meme",          # for raw "meme foo"
     "/meme",         # your slash
+    "/play",
     "/tone",
     "resources",
     "status",
@@ -39,7 +40,7 @@ class HelpCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.help_text = (
-            "Ukazi, ki so na voljo:\n"
+            "# Ukazi, ki so na voljo:\n"
                 " - menza: Si lačn in na FE-ju\n"
                 " - hrana <x>: Izpiše meni restavracije <x>\n"
                 " - hrana random: Ko res neveš kaj bi jedu\n"
@@ -47,6 +48,7 @@ class HelpCog(commands.Cog):
                 " - hrana fact: Fun fact o hrani\n"
                 " - ls memes: Seznam memov\n"
                 " - /meme x: Specifičn meme\n"
+                " - /play x: bot pride v voice in predvaja muziko\n"
                 " - dump memez: Vsi memeji naenkrat\n"
                 " - rnd meme: Random meme\n"
                 " - /tone <x>: Lokalni LLM ki ti odgovori na <x>\n"

@@ -42,7 +42,7 @@ from hrana_cog     import HranaCog
 from meme_cog      import MemeCog
 from llm_cog       import LLMCog
 from admin_cog     import AdminCog
-
+from voice_cog     import VoiceCog
 
 class MyBot(commands.Bot):
     def __init__(self):
@@ -58,7 +58,7 @@ class MyBot(commands.Bot):
         await self.add_cog(MemeCog(self))
         await self.add_cog(LLMCog(self))
         await self.add_cog(AdminCog(self))
-
+        await self.add_cog(VoiceCog(self))
 
 async def main():
     bot = MyBot()

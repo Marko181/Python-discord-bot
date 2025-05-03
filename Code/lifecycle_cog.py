@@ -41,7 +41,7 @@ class LifecycleCog(commands.Cog):
                         content = f.read().strip()
                     
                     # Suppress specific message
-                    if len(content) > 220:
+                    if len(content) > 260:
                         if len(content) >= 2000:
                             content = content[:1980] + "..."
                         await channel.send(f"Log File Found:\n```\n{content}\n```")
