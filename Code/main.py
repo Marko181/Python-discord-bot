@@ -51,24 +51,14 @@ class MyBot(commands.Bot):
 
     async def setup_hook(self):
         # this is run *once*, before login
-        await self.add_cog(LifecycleCog(self))
         await self.add_cog(HelpCog(self))
         await self.add_cog(MenzaCog(self))
         await self.add_cog(HranaCog(self))
         await self.add_cog(MemeCog(self))
         await self.add_cog(LLMCog(self))
         await self.add_cog(AdminCog(self))
-        #await self.add_cog(VoiceCog(self))
-        
-        # Manually add VoiceCog and register its slash commands
-        voice_cog = VoiceCog(self)
-        await self.add_cog(voice_cog)
-
-        # Register slash commands with the bot's tree manually
-        self.tree.add_command(voice_cog.play)
-        self.tree.add_command(voice_cog.queue)
-        self.tree.add_command(voice_cog.stop)
-        self.tree.add_command(voice_cog.next)
+        await self.add_cog(VoiceCog(self))
+        await self.add_cog(LifecycleCog(self))
 
 async def main():
     bot = MyBot()

@@ -30,6 +30,7 @@ class LifecycleCog(commands.Cog):
     async def on_ready(self):
         """Runs once when the bot is ready: sends a startup message, checks for errors, and schedules jobs."""
         try:
+            await self.bot.tree.sync()
             # 1) Send “alive” message in the playground channel
             channel = self.bot.get_channel(BotConfig.CHANNEL_ID_BOTPLAYGROUND)
             if channel:
@@ -70,7 +71,6 @@ class LifecycleCog(commands.Cog):
                 args=[self.bot],
             )
             self.scheduler.start()
-            await self.bot.tree.sync()
 
         except Exception as e:
             # Catch-all: truncate if too long and try to report back
