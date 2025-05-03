@@ -22,7 +22,9 @@ MUSIC_FOLDER = "./Music"
 async def ensure_music_folder():
     os.makedirs(MUSIC_FOLDER, exist_ok=True)
 
-class VoiceCog(commands.Cog):
+#class VoiceCog(commands.Cog):
+class VoiceCog(commands.GroupCog):
+
     """Cog for voice playback, queueing, uploading, deleting, and skipping MP3s."""
 
     def __init__(self, bot: commands.Bot):
@@ -112,8 +114,6 @@ class VoiceCog(commands.Cog):
                         await message.channel.send(f"Could not save '{save_name}': {e}")
                 return
 
-    # @app_commands.command(name="play", description="Play an MP3 file from the music folder")
-    # @app_commands.describe(file_name="Name of the MP3 file (include .mp3)")
     @app_commands.command(name="play", description="Play an MP3 file from the music folder")
     @app_commands.describe(file_name="Name of the MP3 file (include .mp3)")
     async def play(self, interaction: discord.Interaction, file_name: str):
