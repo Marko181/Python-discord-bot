@@ -64,7 +64,7 @@ class AdminCog(commands.Cog):
         # -------- BotRebootNow --------
         elif content.lower().startswith('botrebootnow'):
             if message.author.id in BotConfig.USER_IDS:
-                await message.channel.send("Rebootma bota...")
+                await message.channel.send("Rebootam bota...")
                 try:
                     update.bot_reboot()
                 except Exception as e:

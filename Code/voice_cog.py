@@ -112,6 +112,8 @@ class VoiceCog(commands.Cog):
                         await message.channel.send(f"Could not save '{save_name}': {e}")
                 return
 
+    # @app_commands.command(name="play", description="Play an MP3 file from the music folder")
+    # @app_commands.describe(file_name="Name of the MP3 file (include .mp3)")
     @app_commands.command(name="play", description="Play an MP3 file from the music folder")
     @app_commands.describe(file_name="Name of the MP3 file (include .mp3)")
     async def play(self, interaction: discord.Interaction, file_name: str):

@@ -58,7 +58,17 @@ class MyBot(commands.Bot):
         await self.add_cog(MemeCog(self))
         await self.add_cog(LLMCog(self))
         await self.add_cog(AdminCog(self))
-        await self.add_cog(VoiceCog(self))
+        #await self.add_cog(VoiceCog(self))
+        
+        # Manually add VoiceCog and register its slash commands
+        voice_cog = VoiceCog(self)
+        await self.add_cog(voice_cog)
+
+        # Register slash commands with the bot's tree manually
+        self.tree.add_command(voice_cog.play)
+        self.tree.add_command(voice_cog.queue)
+        self.tree.add_command(voice_cog.stop)
+        self.tree.add_command(voice_cog.next)
 
 async def main():
     bot = MyBot()
