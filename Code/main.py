@@ -63,7 +63,8 @@ class MyBot(commands.Bot):
         await self.add_cog(MemeCog(self))
         await self.add_cog(LLMCog(self))
         await self.add_cog(AdminCog(self))
-        await self.add_cog(VoiceCog(self))
+        #await self.add_cog(VoiceCog(self))
+        await self.load_extension("voice_cog")
 
 async def main():
     bot = MyBot()
