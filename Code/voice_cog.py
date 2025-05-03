@@ -240,5 +240,5 @@ class VoiceCog(commands.Cog):
             logging.exception("Failed to disconnect after playback")
 
 
-def setup(bot: commands.Bot):
-    bot.add_cog(VoiceCog(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(VoiceCog(bot))
