@@ -15,6 +15,7 @@ from classified import BotConfig
 # Keep your version string here (or move into classified.py if you prefer)
 
 ERROR_FILE_PATH = "./errorReport.txt"
+LOG_FILE_PATH = "./log_file.log"
 BOT_VERSION_PATH = "./version.txt"
 with open(BOT_VERSION_PATH, 'r') as file:
     bot_version = file.read().strip()
@@ -98,4 +99,16 @@ class LifecycleCog(commands.Cog):
 
         if message.content.lower() == "pong":
             await message.channel.send("ping")
+
+        if message.content.lower() == "botlog":
+            if os.path.exists(LOG_FILE_PATH):
+                    with open(LOG_FILE_PATH, "r") as f:
+                        content = f.read().strip()
+                    
+                    # Suppress specific message
+                    if len(content) > 260:
+                        if len(content) >= 2000:
+                            content = content[-1980:] + "..."
+                        await message.channel.send(f"Log File Found:\n```\n{content}\n```")
+
     
