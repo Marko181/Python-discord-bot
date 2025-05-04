@@ -18,7 +18,10 @@ ORIGINAL_COMMANDS = [
     "dump memez",
     "meme",          # for raw "meme foo"
     "/meme",         # your slash
-    "/play",
+    "/muzika igraj",
+    "/muzika stoj",
+    "/muzika kolona",
+    "/muzika naprej",
     "/tone",
     "resources",
     "status",
@@ -48,10 +51,10 @@ class HelpCog(commands.Cog):
                 " - hrana fact: Fun fact o hrani\n"
                 " - ls memes: Seznam memov\n"
                 " - /meme x: Specifičn meme\n"
-                " - /play x: bot pride v voice in predvaja muziko\n"
-                " - /stop: ustavi muziko\n"
-                " - /queue: dodaj muziko v queue\n"
-                " - /next: predvajaj naslednjo muziko\n"
+                " - /muzika igraj x: bot pride v voice in predvaja muziko x\n"
+                " - /muzika stoj: ustavi muziko\n"
+                " - /muzika kolona x: dodaj muziko x v queue\n"
+                " - /muzika naprej: predvajaj naslednjo muziko\n"
                 " - dump memez: Vsi memeji naenkrat\n"
                 " - rnd meme: Random meme\n"
                 " - /tone <x>: Lokalni LLM ki ti odgovori na <x>\n"

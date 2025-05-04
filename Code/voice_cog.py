@@ -218,7 +218,10 @@ class VoiceCog(commands.GroupCog, name="muzika"):
         if queue:
             # stop triggers _after_play which will play next
             vc.stop()
+            await asyncio.sleep(1)  # tiny delay to ensure stop completes
+            await self._after_play(None, vc)
             return await interaction.response.send_message("Skipping to next track.", ephemeral=False)
+
         else:
             # no queued items, just stop
             vc.stop()
