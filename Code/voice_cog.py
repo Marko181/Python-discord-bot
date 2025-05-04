@@ -25,12 +25,12 @@ async def ensure_music_folder():
 
 #class VoiceCog(commands.Cog):
 #class VoiceCog(commands.GroupCog):
-class MuzikaGroup(commands.GroupCog):
+class MuzikaGroup(commands.GroupCog, name="muzika"):
 
     """Cog for voice playback, queueing, uploading, deleting, and skipping MP3s."""
 
     def __init__(self, bot: commands.Bot):
-        super().__init__(name="muzika", description="Music commands") # this is new
+        #super().__init__(name="muzika", description="Music commands") # this is new
         self.bot = bot
         # store per-guild queues
         self.queues: dict[int, list[str]] = {}
