@@ -249,8 +249,8 @@ class VoiceCog(commands.GroupCog, name="muzika"):
             logging.exception("Failed to disconnect after queue drained")
 
 
-def setup(bot: commands.Bot):
-    bot.add_cog(VoiceCog(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(VoiceCog(bot))
 
 
 # # voice_cog.py
