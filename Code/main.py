@@ -46,7 +46,7 @@ from voice_cog     import VoiceCog
 
 class MyBot(commands.Bot):
     def __init__(self):
-        super().__init__(command_prefix="/", intents=discord.Intents.all())
+        super().__init__(command_prefix="!", intents=discord.Intents.all())
         self.intents.message_content = True
 
     async def setup_hook(self):
