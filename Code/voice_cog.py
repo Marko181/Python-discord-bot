@@ -22,12 +22,15 @@ MUSIC_FOLDER = "./Music"
 async def ensure_music_folder():
     os.makedirs(MUSIC_FOLDER, exist_ok=True)
 
-class VoiceCog(commands.Cog):
+
+#class VoiceCog(commands.Cog):
 #class VoiceCog(commands.GroupCog):
+class MuzikaGroup(commands.GroupCog):
 
     """Cog for voice playback, queueing, uploading, deleting, and skipping MP3s."""
 
     def __init__(self, bot: commands.Bot):
+        super().__init__(name="muzika", description="Music commands") # this is new
         self.bot = bot
         # store per-guild queues
         self.queues: dict[int, list[str]] = {}
@@ -114,7 +117,7 @@ class VoiceCog(commands.Cog):
                         await message.channel.send(f"Could not save '{save_name}': {e}")
                 return
 
-    @app_commands.command(name="muzika", description="Play an MP3 file from the music folder")
+    @app_commands.command(name="igraj", description="Play an MP3 file from the music folder")
     @app_commands.describe(file_name="Name of the MP3 file (include .mp3)")
     async def play(self, interaction: discord.Interaction, file_name: str):
         await interaction.response.defer()
@@ -244,6 +247,12 @@ class VoiceCog(commands.Cog):
             await vc.disconnect()
         except Exception:
             logging.exception("Failed to disconnect after queue drained")
+
+class VoiceCog(commands.Cog):
+    def __init__(self, bot: commands.Bot):
+        self.bot = bot
+        self.bot.tree.add_command(MuzikaGroup(bot))
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(VoiceCog(bot))
