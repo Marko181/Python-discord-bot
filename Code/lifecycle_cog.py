@@ -70,7 +70,7 @@ class LifecycleCog(commands.Cog):
                 args=[self.bot],
             )
             self.scheduler.start()
-            self.bot.tree.clear_commands(guild=None)  # clear global commands
+            #self.bot.tree.clear_commands(guild=None)  # clear global commands
             await self.bot.tree.sync() # re-sync commands
 
         except Exception as e:

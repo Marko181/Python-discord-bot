@@ -25,7 +25,7 @@ async def ensure_music_folder():
 
 #class VoiceCog(commands.Cog):
 #class VoiceCog(commands.GroupCog):
-class MuzikaGroup(commands.GroupCog, name="muzika"):
+class VoiceCog(commands.GroupCog, name="muzika"):
 
     """Cog for voice playback, queueing, uploading, deleting, and skipping MP3s."""
 
@@ -247,11 +247,6 @@ class MuzikaGroup(commands.GroupCog, name="muzika"):
             await vc.disconnect()
         except Exception:
             logging.exception("Failed to disconnect after queue drained")
-
-class VoiceCog(commands.Cog):
-    def __init__(self, bot: commands.Bot):
-        self.bot = bot
-        self.bot.tree.add_command(MuzikaGroup(bot))
 
 
 def setup(bot: commands.Bot):
