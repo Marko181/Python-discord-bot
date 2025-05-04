@@ -60,6 +60,11 @@ class MyBot(commands.Bot):
         await self.add_cog(VoiceCog(self))
         await self.add_cog(LifecycleCog(self))
 
+        # Force fast sync to your test server
+        GUILD = discord.Object(id=BotConfig.SERVER_ID)  # Replace with your server ID
+        self.tree.clear_commands(guild=GUILD)     # Optional: clear existing ones
+        await self.tree.sync(guild=GUILD)
+
 async def main():
     bot = MyBot()
     logging.info("Starting bot")
