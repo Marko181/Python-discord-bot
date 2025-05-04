@@ -22,8 +22,8 @@ MUSIC_FOLDER = "./Music"
 async def ensure_music_folder():
     os.makedirs(MUSIC_FOLDER, exist_ok=True)
 
-#class VoiceCog(commands.Cog):
-class VoiceCog(commands.GroupCog):
+class VoiceCog(commands.Cog):
+#class VoiceCog(commands.GroupCog):
 
     """Cog for voice playback, queueing, uploading, deleting, and skipping MP3s."""
 
