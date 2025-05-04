@@ -114,7 +114,7 @@ class VoiceCog(commands.GroupCog):
                         await message.channel.send(f"Could not save '{save_name}': {e}")
                 return
 
-    @app_commands.command(name="play", description="Play an MP3 file from the music folder")
+    @app_commands.command(name="muzika", description="Play an MP3 file from the music folder")
     @app_commands.describe(file_name="Name of the MP3 file (include .mp3)")
     async def play(self, interaction: discord.Interaction, file_name: str):
         await interaction.response.defer()
@@ -148,7 +148,7 @@ class VoiceCog(commands.GroupCog):
                     break
         return choices
 
-    @app_commands.command(name="queue", description="Add an MP3 to the play queue")
+    @app_commands.command(name="kolona", description="Add an MP3 to the play queue")
     @app_commands.describe(file_name="Name of the MP3 file (include .mp3)")
     async def queue(self, interaction: discord.Interaction, file_name: str):
         await interaction.response.defer(ephemeral=True)
@@ -190,7 +190,7 @@ class VoiceCog(commands.GroupCog):
                     break
         return choices
 
-    @app_commands.command(name="stop", description="Stop playback and clear the queue")
+    @app_commands.command(name="stoj", description="Stop playback and clear the queue")
     async def stop(self, interaction: discord.Interaction):
         vc = discord.utils.get(self.bot.voice_clients, guild=interaction.guild)
         if not vc or not vc.is_playing():
@@ -204,7 +204,7 @@ class VoiceCog(commands.GroupCog):
             logging.exception("Failed to disconnect after stop")
         await interaction.followup.send("Playback stopped and queue cleared.", ephemeral=False)
 
-    @app_commands.command(name="next", description="Skip to the next song in queue")
+    @app_commands.command(name="naprej", description="Skip to the next song in queue")
     async def next(self, interaction: discord.Interaction):
         vc = discord.utils.get(self.bot.voice_clients, guild=interaction.guild)
         queue = self.queues.get(interaction.guild.id, [])
