@@ -3,10 +3,16 @@ from datasets import load_dataset
 from smolagents import Tool
 from langchain_community.retrievers import BM25Retriever
 from langchain.schema import Document
+from sentence_transformers import SentenceTransformer
+import faiss
+
 #from langchain.vectorstores import BM25
 #from llm import local_llm
 from smolagents import CodeAgent, InferenceClientModel
-from transformers import pipeline
+from transformers import pipeline, logging as hf_logging
+
+# Suppress transformer logging messages
+#hf_logging.get_logger.set_verbosity_error()
 
 
 # Load the dataset
@@ -24,6 +30,13 @@ documents = [
     for item in data["train"]
 ]
 
+# Embedding model
+model = SentenceTransformer('all-MiniLM-L6-v2')  # Example embedding model
+
+# Generate embeddings for each document
+embeddings = model.encode([doc.page_content for doc in documents])
+
+
 # Create a BM25 index
 #bm25_index = BM25Index.from_document(documents)
 
@@ -31,7 +44,8 @@ documents = [
 # DB has keys: reviewer, ranking, review, restaurant so we specify text_key="review" to let BM25 index the reviews
 retriever = BM25Retriever.from_documents(documents)
 
-generator = pipeline("text-generation", model="distilgpt2")
+#generator = pipeline("text-generation", model="distilgpt2")    # More Lightweight
+generator = pipeline("text-generation", model="gpt2")
 
 def generate_answer(query: str, reviewed_text: str) -> str:
     """
@@ -42,8 +56,16 @@ def generate_answer(query: str, reviewed_text: str) -> str:
     prompt = (
        #f"Based on the following restaurant reviews:\n{reviewed_text}\n\n"
        #f"Answer the following question: {query}\n"
-       f"Based on the following restaurant reviews:\n{reviewed_text}\n\n"
-       f"Answer the following question: {query}\n"
+       
+       #f"Based on the following restaurant reviews:\n{reviewed_text}\n\n"
+       #f"Answer the following question in at most 2 sentences: {query}\n"  
+      f"Context:"
+      f"{reviewed_text}"
+
+      f"Question: {query}"
+      f"Please answer in 2-3 sentences, summarizing the main sentiment and key points."
+
+       
     )
 
     # Use the smolagents to generate an answer
