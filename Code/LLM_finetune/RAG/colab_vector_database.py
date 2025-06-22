@@ -3,9 +3,17 @@ from sentence_transformers import SentenceTransformer
 #from rank_bm25 import BM25Okapi
 from chromadb import Client
 from chromadb.config import Settings
-from Code.llm import local_llm
+# doesn't work in colab
+#from Code.llm import local_llm
 from typing import List, Dict, Any
 import json
+#Test
+#Test2
+
+# FOr colab
+import sys
+sys.path.append('/content/Python-discord-bot/Code/')
+from llm import local_llm
 
 
 # Load the dataset
@@ -103,8 +111,11 @@ def answer_question(query: str, data: List[Dict[str, Any]]):
 
 # Example usage
 if __name__ == "__main__":
-    data_file = 'Code/LLM_finetune/data_scraping/restaurant_reviews_V2.json'
+    #data_file = 'Code/LLM_finetune/data_scraping/restaurant_reviews_V2.json'
+    # Colab version
+    data_file = '/content/Python-discord-bot/Code/LLM_finetune/data_scraping/restaurant_reviews_V2.json'
     data = load_json_data(data_file)
+    print("Querying the question")
     query = "Give me the general impression and sentiment about the Foculus restaurant based on the reviews."
     answer = answer_question(query, data)
     print(answer)
