@@ -1,6 +1,25 @@
 from gpt4all import GPT4All
 import psutil
 
+class LocalLLM:
+    def __init__(self, model_path="Meta-Llama-3-8B-Instruct.Q4_0.gguf", threads=20):
+        print(f"Loading the model: ({model_path})")
+        self.model = GPT4All(model_path, n_threads=threads)
+
+    def __call__(self, text_input, num_tokens=50):
+        # TODO: add the prompt logic from local_llm
+        output = self.model.generate(text_input, max_tokens=num_tokens)
+        return output
+    
+
+# Global LLM instance - only created once, not loading the model every time    
+llm_instance = LocalLLM()
+
+def global_llm(text_input, num_tokens):
+    return llm_instance(text_input, num_tokens=num_tokens)
+
+
+
 def get_resource_stats():
     ##############################################################
     ################# Monitor resource usage #####################
