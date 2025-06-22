@@ -3,7 +3,7 @@ from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 import sys
 sys.path.append('/content/Python-discord-bot/Code/')
-from llm import local_llm  # or your LLM import
+from llm import local_llm, global_llm  # or your LLM import
 
 client = Client(Settings(anonymized_telemetry=False, persist_directory="chroma_db"))
 collection = client.get_collection("reviews_collection")
@@ -20,10 +20,13 @@ def generate_answer(query, retrieved_reviews):
         f"{' '.join(retrieved_reviews)}\n\n"
         f"Answer the following question: {query}\n"
     )
-    return local_llm(prompt)
+    #return local_llm(prompt)
+    return global_llm(prompt, num_tokens=300)
 
 # Example usage
 query = "Give me the general impression and sentiment about the Foculus restaurant based on the reviews."
+print("Retrieving the data")
 retrieved_reviews = retrieve_reviews_vector(query, collection, embedder)
+print("Generating the data")
 answer = generate_answer(query, retrieved_reviews)
 print(answer)

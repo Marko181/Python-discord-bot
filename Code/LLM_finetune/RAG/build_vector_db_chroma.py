@@ -20,4 +20,4 @@ collection.add(
     embeddings=embeddings,
     ids=[str(i) for i in range(len(reviews))]
 )
-client.persist()
+#client.persist()
