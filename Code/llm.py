@@ -53,7 +53,7 @@ def get_resource_stats():
 def local_llm(text_input, threads=20, custom_model="Meta-Llama-3-8B-Instruct.Q4_0.gguf"):
 
     """
-    "orca-mini-3b-gguf2-q4_0.gguf"
+    "orca-mini-3b-gguf2-q4_0.gguf" ali "mistral-7b-instruct-v0.1.Q4_0.gguf"
 
     "Meta-Llama-3-8B-Instruct.Q4_0.gguf"
     """
@@ -74,6 +74,7 @@ def local_llm(text_input, threads=20, custom_model="Meta-Llama-3-8B-Instruct.Q4_
     # Select model based on user flag
     if "--fast" in text_input:
         custom_model = "orca-mini-3b-gguf2-q4_0.gguf"
+        #custom_model = "mistral-7b-instruct-v0.1.Q4_0.gguf"
     else:
         custom_model = "Meta-Llama-3-8B-Instruct.Q4_0.gguf"
 
