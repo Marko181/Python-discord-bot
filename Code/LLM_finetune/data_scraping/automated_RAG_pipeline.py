@@ -4,12 +4,6 @@ import time
 import json
 
 
-
-# Make sure all scripts are importable
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data_scraping'))
-sys.path.append('/content/Python-discord-bot/Code/LLM_finetune/data_scraping')
-
 from scraping_google import create_database, scrape_google_reviews, read_restaurant_list
 
 # --- Step 1: Read restaurant list --- #
