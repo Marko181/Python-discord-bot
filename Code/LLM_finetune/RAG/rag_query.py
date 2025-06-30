@@ -24,9 +24,17 @@ def generate_answer(query, retrieved_reviews):
     return global_llm(prompt, num_tokens=300)
 
 # Example usage
-query = "Give me the general impression and sentiment about the Foculus restaurant based on the reviews."
-print("Retrieving the data")
-retrieved_reviews = retrieve_reviews_vector(query, collection, embedder)
-print("Generating the data")
-answer = generate_answer(query, retrieved_reviews)
-print(answer)
+#query = "Give me the general impression and sentiment about the Foculus restaurant based on the reviews."
+#print("Retrieving the data")
+#retrieved_reviews = retrieve_reviews_vector(query, collection, embedder)
+#print("Generating the data")
+#answer = generate_answer(query, retrieved_reviews)
+#print(answer)
+
+if __name__ == "__main__":
+    query = input("Type your question about a restaurant: ")
+    print("Retrieving the data...")
+    retrieved_reviews = retrieve_reviews_vector(query, collection, embedder)
+    print("Generating the answer...")
+    answer = generate_answer(query, retrieved_reviews)
+    print("\nAnswer:\n", answer)
