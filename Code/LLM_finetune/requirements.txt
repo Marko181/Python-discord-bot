@@ -5,3 +5,5 @@ transformers
 peft
 datasets
 trl
+sentence_transformers
+chromadb
