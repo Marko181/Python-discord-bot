@@ -1,5 +1,17 @@
 from gpt4all import GPT4All
 import psutil
+from chromadb import Client
+from chromadb.config import Settings
+from sentence_transformers import SentenceTransformer
+
+# TODO: Set the correct path for model and DBs
+CHROMA_DB_DIR = "chroma_db"
+CHROMA_COLLECTION = "reviews_collection"
+EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+
+client = Client(Settings(anonymized_telemetry=False, persist_directory=CHROMA_DB_DIR))
+collection = client.get_collection(CHROMA_COLLECTION)
+embedder = SentenceTransformer(EMBEDDING_MODEL)
 
 class LocalLLM:
     def __init__(self, model_path="Meta-Llama-3-8B-Instruct.Q4_0.gguf", threads=20):
@@ -17,8 +29,6 @@ llm_instance = LocalLLM()
 
 def global_llm(text_input, num_tokens):
     return llm_instance(text_input, num_tokens=num_tokens)
-
-
 
 def get_resource_stats():
     ##############################################################
@@ -152,7 +162,25 @@ def local_llm(text_input, threads=20, custom_model="Meta-Llama-3-8B-Instruct.Q4_
         
     return processed_output
 
+def retrieve_reviews_vector(query, top_k=3):
+    query_embedding = embedder.encode([query]).tolist()[0]
+    results = collection.query(query_embeddings=[query_embedding], n_results=top_k)
+    return results['documents'][0] if results['documents'] else []
+
+def rag_llm(query, num_tokens=300):
+    # Retrieve relevant reviews
+    retrieved_reviews = retrieve_reviews_vector(query)
+    # Compose the RAG prompt
+    prompt = (
+        f"Based on the following restaurant reviews:\n"
+        f"{' '.join(retrieved_reviews)}\n\n"
+        f"Answer the following question: {query}\n"
+    )
+    # Use your global LLM instance for generation
+    return global_llm(prompt, num_tokens=num_tokens)
+
+
 if __name__ == "__main__":
     text = input("Write your question here: ")
-    output = local_llm(text, custom_model="Meta-Llama-3-8B-Instruct.Q4_0.gguf")
+    output = local_llm(text, custom_model="mistral-7b-instruct-v0.1.Q4_0.gguf")
     print(output)
