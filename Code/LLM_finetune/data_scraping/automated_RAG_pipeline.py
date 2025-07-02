@@ -2,6 +2,8 @@ import os
 import sys
 import time
 import json
+import chromadb
+from chromadb.config import Settings, DEFAULT_TENANT, DEFAULT_DATABASE
 
 
 from scraping_google import create_database, scrape_google_reviews, read_restaurant_list
@@ -9,10 +11,13 @@ from scraping_google import create_database, scrape_google_reviews, read_restaur
 # --- Step 1: Read restaurant list --- #
 
 # Non-Colab paths
-RESTAURANTS_TXT = 'restaurants.txt'
-DB_PATH = 'google_reviews.db'
-JSON_EXPORT_PATH = 'data/restaurant_reviews_V2.json'
-CHROMA_DB_DIR = 'chroma_db'
+RESTAURANTS_TXT = os.path.abspath('restaurants_backup.txt')
+DB_PATH = os.path.abspath('google_reviews.db')
+JSON_EXPORT_PATH = os.path.abspath('restaurant_reviews_V2.json')
+#CHROMA_DB_DIR = 'chroma_db'
+CHROMA_DB_DIR = os.path.abspath('chroma_db')
+print("Chroma DB will be stored at:", CHROMA_DB_DIR)
+
 
 # Colab paths
 # TODO
@@ -62,7 +67,12 @@ def build_chroma_vector_db():
     with open(JSON_EXPORT_PATH, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
-    client = Client(Settings(anonymized_telemetry=False, persist_directory=CHROMA_DB_DIR))
+    client = chromadb.PersistentClient(
+    	path=CHROMA_DB_DIR,
+    	settings=Settings(anonymized_telemetry=False),
+    	tenant=DEFAULT_TENANT,
+    	database=DEFAULT_DATABASE,
+    )
     collection = client.get_or_create_collection("reviews_collection")
     embedder = SentenceTransformer("all-MiniLM-L6-v2")
 
@@ -75,14 +85,22 @@ def build_chroma_vector_db():
     )
     print(f"Chroma vector DB built with {len(reviews)} reviews at {CHROMA_DB_DIR}")
 
+    # Debugging: Print the absolute path and check if the directory exists
+    abs_path = os.path.abspath(CHROMA_DB_DIR)
+    print(f"Absolute path to Chroma DB directory: {abs_path}")
+    if os.path.exists(abs_path):
+        print(f"Directory exists: {abs_path}")
+    else:
+        print(f"Directory does not exist: {abs_path}")
+
 
 
 # --- Main orchestrator ---
 if __name__ == "__main__":
     print("Step 1 & 2: Scraping all restaurants...")
-    scrape_all_restaurants()
+    #scrape_all_restaurants()
     print("Step 3: Exporting reviews to JSON...")
-    export_reviews_to_json()
+    #export_reviews_to_json()
     print("Step 4: Building Chroma vector DB...")
     build_chroma_vector_db()
     print("Pipeline complete!")
