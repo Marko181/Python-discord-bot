@@ -265,11 +265,15 @@ def RAG_answer_pipeline(query, k=5):
     Retrieve relevant reviews and generate an answer using the global LLM instance.
     """
     chroma_collection = load_chroma_collection()
+    
+    print("collection colected")
     #embedder = SentenceTransformer(EMBEDDING_MODEL)
     #query_embedding = embedder.encode(query).tolist()
     #results = collection.query(query_embeddings=[query_embedding], n_results=k)
     results = retrieve_documents(chroma_collection, query, k=4)
-    documents = results['documents'][0] if results['documents'] else []
+    print("RAG results: ", results)
+    #documents = results['documents'][0] if results['documents'] else []
+    documents = results[0]['documents'] if results and 'documents' in results[0] else []
     context = "\n".join(documents)
     prompt = (
         f"{system_prompt}\n"
@@ -277,7 +281,7 @@ def RAG_answer_pipeline(query, k=5):
         f"Question: {query}\n"
         f"Please answer in 2-3 sentences, summarizing the main sentiment and key points."
     )
-    answer = llm_instance(prompt, num_tokens=250)
+    answer = llm_instance(prompt, num_tokens=500)
     return answer
 
 

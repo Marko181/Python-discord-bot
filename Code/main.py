@@ -32,7 +32,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name
 
 # tell Python where to find Classified/
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'Classified')))
-from classified import BotConfig
+from Classified.classified import BotConfig
 
 # import your Cog classes
 from lifecycle_cog import LifecycleCog
