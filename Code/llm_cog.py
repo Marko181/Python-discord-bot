@@ -6,7 +6,7 @@ import discord
 from discord.ext import commands
 
 # Import your local LLM functions
-from llm import local_llm, get_resource_stats, rag_llm, RAG_answer_pipeline
+from llm import local_llm, get_resource_stats, RAG_answer_pipeline
 
 
 class LLMCog(commands.Cog):
