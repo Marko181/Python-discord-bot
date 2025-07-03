@@ -6,7 +6,7 @@ import discord
 from discord.ext import commands
 
 # Import your local LLM functions
-from llm import local_llm, get_resource_stats, rag_llm
+from llm import local_llm, get_resource_stats, rag_llm, RAG_answer_pipeline
 
 
 class LLMCog(commands.Cog):
@@ -35,7 +35,7 @@ class LLMCog(commands.Cog):
             use_rag = '--rag' in input_text
             try:
                 if use_rag:
-                    generated = await asyncio.to_thread(rag_llm, input_text)
+                    generated = await asyncio.to_thread(RAG_answer_pipeline, input_text)
                 else:
                     generated = await asyncio.to_thread(local_llm, input_text)
                 # Run the (potentially blocking) LLM call in a thread
@@ -51,10 +51,10 @@ class LLMCog(commands.Cog):
 
         
 
-        elif lower.startswith('update_rag_db'):
+        """ elif lower.startswith('update_rag_db'):
             await message.channel.send("Starting RAG pipeline update. This may take a while...")
             try:
-                script_path = # TODO: set the correct path to the automated_RAG_pipeline script "/Users/lukamelinc/Desktop/Programiranje/Python-discord-bot/Code/LLM_finetune/data_scraping/automated_RAG_pipeline.py"
+                script_path = "LLM_finetune/data_scraping/automated_RAG_pipeline.py"
                 # Run the script and capture output
                 result = subprocess.run(
                     ["python", script_path],
@@ -71,10 +71,10 @@ class LLMCog(commands.Cog):
                 err = f"Error running RAG pipeline: {e}"
                 if len(err) >= 4000:
                     err = err[:3980] + "..."
-                await message.channel.send(err)
+                await message.channel.send(err)"""
 
         # Handle resources command
-        elif lower.startswith('resources'):
+        """elif lower.startswith('resources'):
             try:
                 stats = get_resource_stats()
                 await message.channel.send(stats)
@@ -82,7 +82,7 @@ class LLMCog(commands.Cog):
                 err = f"Error in resources command: {e}"
                 if len(err) >= 4000:
                     err = err[:3980] + "..."
-                await message.channel.send(err)
+                await message.channel.send(err)"""
 
 
 

@@ -1,27 +1,94 @@
 from gpt4all import GPT4All
 import psutil
-from chromadb import Client
+from chromadb import Client, PersistentClient
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 
 # TODO: Set the correct path for model and DBs
-CHROMA_DB_DIR = "chroma_db"
+CHROMA_DB_DIR = "/home/tinta/Desktop/Python-discord-bot/LLM_finetune/data_scraping/chroma_db"
 CHROMA_COLLECTION = "reviews_collection"
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+DEFAULT_TENANT = "default_tenant"
+DEFAULT_DATABASE = "default_database"
 
-client = Client(Settings(anonymized_telemetry=False, persist_directory=CHROMA_DB_DIR))
-collection = client.get_collection(CHROMA_COLLECTION)
-embedder = SentenceTransformer(EMBEDDING_MODEL)
+system_prompt = "You are a Restaurant Review Analyzer, a specialized Large Language Model (LLM) designed to process and analyze restaurant reviews. Your primary task is to take in reviews of restaurants, extract relevant information, and provide enriched responses based on the database specifics. If you do not have data on a given restaurant, say that you do not know."
+
+
+#client = Client(Settings(anonymized_telemetry=False, persist_directory=CHROMA_DB_DIR))
+#print(client.list_collections())
+#collection = client.get_collection(CHROMA_COLLECTION)
+#embedder = SentenceTransformer(EMBEDDING_MODEL)
 
 class LocalLLM:
-    def __init__(self, model_path="Meta-Llama-3-8B-Instruct.Q4_0.gguf", threads=20):
+    def __init__(self, model_path="mistral-7b-instruct-v0.1.Q4_0.gguf", threads=20):
         print(f"Loading the model: ({model_path})")
         self.model = GPT4All(model_path, n_threads=threads)
 
     def __call__(self, text_input, num_tokens=50):
         # TODO: add the prompt logic from local_llm
-        output = self.model.generate(text_input, max_tokens=num_tokens)
-        return output
+        # Prompt logic and output processing from local_llm
+        output_type = "short"
+        # Set the flag for text length
+        if "--long" in text_input:
+            output_type = "long"
+            text_input = text_input.replace("--long", "").strip()
+            num_tokens = 250
+        elif "--raw" in text_input:
+            output_type = "raw"
+            text_input = text_input.replace("--raw", "").strip()
+            num_tokens = 250
+
+        full_input = text_input
+
+        # Edit the input prompt
+        if output_type == "short":
+            full_input = text_input
+        elif output_type == "raw":
+            full_input = text_input
+        else:
+            full_input = text_input
+
+        # Generate the response
+        output = self.model.generate(full_input, max_tokens=num_tokens)
+
+        # Handle None, empty strings, or non-string outputs
+        if not isinstance(output, str) or not output.strip():
+            return "Output is empty or invalid."
+
+        # Find the last period in the string
+        last_period_index = output.rfind('.')
+
+        try:
+            if output_type == "short":
+                end_marker_index = output.find('<end>')
+                if end_marker_index != -1:
+                    processed_output = output[:end_marker_index].strip()
+                else:
+                    first_period_index = output.find('.')
+                    if first_period_index != -1:
+                        processed_output = output[:first_period_index + 1].strip()
+                    else:
+                        first_newline_index = output.find('\n')
+                        if first_newline_index != -1:
+                            processed_output = output[:first_newline_index].strip() + "."
+                        else:
+                            processed_output = output.strip()
+            elif output_type == "long":
+                if last_period_index != -1:
+                    processed_output = output[:last_period_index + 1].strip() + ".."
+                else:
+                    processed_output = output.strip()
+            else:
+                processed_output = output.strip()
+        except Exception as e:
+            processed_output = f"An error occurred in llm.py: {str(e)}"
+
+        if len(processed_output) >= 4000:
+            processed_output = processed_output[:3996] + "..."
+
+        return processed_output
+        
+        
     
 
 # Global LLM instance - only created once, not loading the model every time    
@@ -91,7 +158,7 @@ def local_llm(text_input, threads=20, custom_model="Meta-Llama-3-8B-Instruct.Q4_
     model = GPT4All(custom_model, n_threads=threads)
 
     # Print out system resource stats
-    get_resource_stats()
+    #get_resource_stats()
 
     full_input = ""
 
@@ -162,25 +229,59 @@ def local_llm(text_input, threads=20, custom_model="Meta-Llama-3-8B-Instruct.Q4_
         
     return processed_output
 
-def retrieve_reviews_vector(query, top_k=3):
-    query_embedding = embedder.encode([query]).tolist()[0]
-    results = collection.query(query_embeddings=[query_embedding], n_results=top_k)
-    return results['documents'][0] if results['documents'] else []
+# RAG SECTION START #
 
-def rag_llm(query, num_tokens=300):
-    # Retrieve relevant reviews
-    retrieved_reviews = retrieve_reviews_vector(query)
-    # Compose the RAG prompt
-    prompt = (
-        f"Based on the following restaurant reviews:\n"
-        f"{' '.join(retrieved_reviews)}\n\n"
-        f"Answer the following question: {query}\n"
+# Function loads the chroma collection, currently only supports one collection
+# TODO: Expand the function tu support different collections, different types of data
+def load_chroma_collection():
+    client = PersistentClient(
+        path=CHROMA_DB_DIR,
+        settings=Settings(anonymized_telemetry=False),
+        tenant=DEFAULT_TENANT,
+        database=DEFAULT_DATABASE,
     )
-    # Use your global LLM instance for generation
-    return global_llm(prompt, num_tokens=num_tokens)
+    collection = client.get_collection("reviews_collection")
+    return collection
+
+# Retrieve relevant documents from Chroma
+def retrieve_documents(collection, query, k=3):
+    embedder = SentenceTransformer("all-MiniLM-L6-v2")
+    query_embedding = embedder.encode(query).tolist()
+    results = collection.query(
+        query_embeddings=[query_embedding],
+        n_results=k
+    )
+    return results['documents'][0]
+
+# Load the GPT4All model
+def load_gpt4all_model():
+    model_path = "mistral-7b-instruct-v0.1.Q4_0.gguf"
+    model = GPT4All(model_name=model_path)
+    return model
 
 
-if __name__ == "__main__":
-    text = input("Write your question here: ")
-    output = local_llm(text, custom_model="mistral-7b-instruct-v0.1.Q4_0.gguf")
-    print(output)
+def RAG_answer_pipeline(query, k=5):
+    """
+    Retrieve relevant reviews and generate an answer using the global LLM instance.
+    """
+    chroma_collection = load_chroma_collection()
+    #embedder = SentenceTransformer(EMBEDDING_MODEL)
+    #query_embedding = embedder.encode(query).tolist()
+    #results = collection.query(query_embeddings=[query_embedding], n_results=k)
+    results = retrieve_documents(chroma_collection, query, k=4)
+    documents = results['documents'][0] if results['documents'] else []
+    context = "\n".join(documents)
+    prompt = (
+        f"{system_prompt}\n"
+        f"Context:\n{context}\n\n"
+        f"Question: {query}\n"
+        f"Please answer in 2-3 sentences, summarizing the main sentiment and key points."
+    )
+    answer = llm_instance(prompt, num_tokens=250)
+    return answer
+
+
+    
+# RAG SECTION END #
+
+
