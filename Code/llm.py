@@ -270,18 +270,25 @@ def RAG_answer_pipeline(query, k=5):
     #embedder = SentenceTransformer(EMBEDDING_MODEL)
     #query_embedding = embedder.encode(query).tolist()
     #results = collection.query(query_embeddings=[query_embedding], n_results=k)
-    results = retrieve_documents(chroma_collection, query, k=4)
+    results = retrieve_documents(chroma_collection, query, k=2)
     print("RAG results: ", results)
     #documents = results['documents'][0] if results['documents'] else []
     documents = results[0]['documents'] if results and 'documents' in results[0] else []
     context = "\n".join(documents)
-    prompt = (
-        f"{system_prompt}\n"
-        f"Context:\n{context}\n\n"
-        f"Question: {query}\n"
-        f"Please answer in 2-3 sentences, summarizing the main sentiment and key points."
-    )
-    answer = llm_instance(prompt, num_tokens=500)
+    prompt = (f"System prompt: {system_prompt} Context: {results} Question: {query} Please answer in 2-3 sentences, summarizing the main sentiment and key points.")
+    print("---")
+    print(prompt)
+    print("---")
+    print(system_prompt)
+    print("---")
+    print(context)
+    print("---")
+    print(query)
+    print("---")
+    print(results)
+    
+
+    answer = llm_instance(prompt, num_tokens=750)
     return answer
 
 

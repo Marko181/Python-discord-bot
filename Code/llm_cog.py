@@ -33,13 +33,14 @@ class LLMCog(commands.Cog):
             # Extract everything after "/tone"
             input_text = content[len('/tone'):].strip()
             use_rag = '--rag' in input_text
+            #return "in if statement"
             try:
                 if use_rag:
                     generated = await asyncio.to_thread(RAG_answer_pipeline, input_text)
                 else:
                     generated = await asyncio.to_thread(local_llm, input_text)
                 # Run the (potentially blocking) LLM call in a thread
-                generated = await asyncio.to_thread(local_llm, input_text)
+                #generated = await asyncio.to_thread(local_llm, input_text)
                 if len(generated) >= 4000:
                     generated = generated[:3980] + "..."
                 await message.channel.send(generated)
